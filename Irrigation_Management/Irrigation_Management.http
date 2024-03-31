@@ -1,0 +1,6 @@
+@Irrigation_Management_HostAddress = http://localhost:5011
+
+GET {{Irrigation_Management_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
