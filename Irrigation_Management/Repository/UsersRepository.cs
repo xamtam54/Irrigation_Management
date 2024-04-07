@@ -9,9 +9,13 @@ namespace Irrigation_Management.Repository
     {
         Task<List<Users>> GetAll();
         Task<Users?> GetUser(int User_Id); 
-        Task<Users> CreateUser(string UserName, string Names, string Surnames, string Password, string Email, int System_Id, int User_Type_Id);
-        Task<Users?> UpdateUser(int Users_Id, string UserName, string Names, string Surnames, string Password, string Email, int Is_Active, int System_Id, int User_Type_Id);
+        Task<Users> CreateUser(string UserName, string Names, string Surnames, string Password, string Email, int User_Type_Id);
+        Task<Users?> UpdateUser(int Users_Id, string UserName, string Names, string Surnames, string Password, string Email, int Is_Active, int User_Type_Id);
         Task<Users?> DeleteUser(int User_Id);
+
+        //-------------------------------------------------------------
+        Task<Allocation_Achievements> CreateAllocation(int userId, int achievementId);
+        Task<Allocation_Achievements?> DeleteAllocation(int userId, int achievementId);
     }
     public class UsersRepository : IUsersRepository
     {
@@ -30,7 +34,7 @@ namespace Irrigation_Management.Repository
             return await _db.Users.FindAsync(User_Id);
         }
 
-        public async Task<Users> CreateUser(string UserName, string Names, string Surnames, string Password, string Email, int System_Id, int User_Type_Id)
+        public async Task<Users> CreateUser(string UserName, string Names, string Surnames, string Password, string Email, int User_Type_Id)
         {
             Users newUser = new Users
             {
@@ -39,7 +43,6 @@ namespace Irrigation_Management.Repository
                 Surnames = Surnames,
                 Password = Password,
                 Email = Email,
-                System_Id = System_Id,
                 User_Type_Id = User_Type_Id
             };
 
@@ -48,7 +51,7 @@ namespace Irrigation_Management.Repository
             return newUser;
         }
 
-        public async Task<Users?> UpdateUser(int Users_Id, string UserName, string Names, string Surnames, string Password, string Email, int Is_Active, int System_Id, int User_Type_Id)
+        public async Task<Users?> UpdateUser(int Users_Id, string UserName, string Names, string Surnames, string Password, string Email, int Is_Active, int User_Type_Id)
         {
             Users? userToUpdate = await GetUser(Users_Id);
 
@@ -60,7 +63,6 @@ namespace Irrigation_Management.Repository
                 userToUpdate.Password = Password;
                 userToUpdate.Email = Email;
                 userToUpdate.Is_Active = Is_Active;
-                userToUpdate.System_Id = System_Id;
                 userToUpdate.User_Type_Id = User_Type_Id;
 
                 await _db.SaveChangesAsync();
@@ -81,6 +83,51 @@ namespace Irrigation_Management.Repository
             }
 
             return userToDelete;
+        }
+
+        //----------------------------------------------------------------------------
+        public async Task<Allocation_Achievements> CreateAllocation(int userId, int achievementId)
+        {
+            var existingAllocation = await _db.Allocation_Achievements
+                .SingleOrDefaultAsync(a => a.Users_Id == userId && a.Achievement_Id == achievementId);
+
+            if (existingAllocation != null)
+            {
+                throw new InvalidOperationException("already exists");
+            }
+
+            var user = await _db.Users.FindAsync(userId);
+            var achievement = await _db.Achievements.FindAsync(achievementId);
+
+            if (user == null || achievement == null)
+            {
+                throw new InvalidOperationException("User or achievement does not exist");
+            }
+
+            var allocation = new Allocation_Achievements
+            {
+                Users_Id = userId,
+                Achievement_Id = achievementId
+            };
+
+            await _db.Allocation_Achievements.AddAsync(allocation);
+            await _db.SaveChangesAsync();
+
+            return allocation;
+        }
+
+        public async Task<Allocation_Achievements?> DeleteAllocation(int userId, int achievementId)
+        {
+            var allocation = await _db.Allocation_Achievements
+                .SingleOrDefaultAsync(a => a.Users_Id == userId && a.Achievement_Id == achievementId);
+
+            if (allocation != null)
+            {
+                _db.Allocation_Achievements.Remove(allocation);
+                await _db.SaveChangesAsync();
+            }
+
+            return allocation;
         }
     }
 }

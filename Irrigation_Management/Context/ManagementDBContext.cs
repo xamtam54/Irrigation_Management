@@ -25,6 +25,11 @@ namespace Irrigation_Management.Context
         public DbSet<Water_Management> Water_Managements { get; set; } = null!;
         public DbSet<Water_Management_Types> Water_Management_Types { get; set; } = null!;
         public DbSet<Crop_Status> Crop_Status { get; set; } = null!;
+        public DbSet<Achievements> Achievements { get; set;} = null!;
+        public DbSet<Allocation_Systems> Allocation_Systems { get; set; } = null!;
+        public DbSet<Allocation_Achievements> Allocation_Achievements { get; set; } = null!;
+        public DbSet<Games> Games { get; set; } = null!;
+        public DbSet<Score> Scores { get; set; } = null!;
 
     }
 }

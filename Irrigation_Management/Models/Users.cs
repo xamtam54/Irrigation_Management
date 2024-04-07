@@ -22,8 +22,6 @@ namespace Irrigation_Management.Models
         [Range(0, 1, ErrorMessage = "El valor debe estar entre 0 y 1")]
         public int Is_Active { get; set; } = 1;
         //-------------------------------------------------------------------------------------
-        public required int System_Id { get; set; }
-        public Systems? Systems { get; set; }
         public required int User_Type_Id { get; set; }
         public User_Types? User_Types { get; set; }
     }
