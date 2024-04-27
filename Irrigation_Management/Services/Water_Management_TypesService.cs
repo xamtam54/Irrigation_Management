@@ -15,7 +15,7 @@ namespace Irrigation_Management.Services
     public class WaterManagementTypesService : IWaterManagementTypesService
     {
         private readonly IWaterManagementTypesRepository _waterManagementTypesRepository;
-        public WaterManagementTypesService(WaterManagementTypesRepository waterManagementTypesRepository)
+        public WaterManagementTypesService(IWaterManagementTypesRepository waterManagementTypesRepository)
         {
             _waterManagementTypesRepository = waterManagementTypesRepository;
         }
@@ -27,7 +27,16 @@ namespace Irrigation_Management.Services
 
         public async Task<Water_Management_Types?> DeleteWaterManagementType(int Water_Management_Type_Id)
         {
-            return await _waterManagementTypesRepository.DeleteWaterManagementType(Water_Management_Type_Id);
+            Water_Management_Types? type = await _waterManagementTypesRepository.GetWaterManagementType(Water_Management_Type_Id);
+
+            if (type != null)
+            {
+                type.IsDeleted = true;
+                // type.Date = DateTime.Now;
+                return await _waterManagementTypesRepository.DeleteWaterManagementType(type);
+            }
+
+            return null;
         }
 
         public async Task<List<Water_Management_Types>> GetAll()

@@ -10,7 +10,7 @@ namespace Irrigation_Management.Repository
         Task<Achievements?> GetAchievement(int achievementId);
         Task<Achievements> CreateAchievement(string achievementName, string achievementDescription, int achievementStatus);
         Task<Achievements?> UpdateAchievement(int achievementId, string achievementName, string achievementDescription, int achievementStatus);
-        Task<Achievements?> DeleteAchievement(int achievementId);
+        Task<Achievements?> DeleteAchievement(Achievements achievementToDelete);
     }
 
     public class AchievementsRepository : IAchievementsRepository
@@ -69,6 +69,17 @@ namespace Irrigation_Management.Repository
             {
                 _db.Achievements.Remove(achievementToDelete);
                 await _db.SaveChangesAsync();
+            }
+
+            return achievementToDelete;
+        }
+
+        public async Task<Achievements?> DeleteAchievement(Achievements achievementToDelete)
+        {
+            if (achievementToDelete != null)
+            {
+                achievementToDelete.IsDeleted = true; 
+                await _db.SaveChangesAsync(); 
             }
 
             return achievementToDelete;

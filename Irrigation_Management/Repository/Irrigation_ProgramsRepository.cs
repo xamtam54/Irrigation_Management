@@ -10,7 +10,7 @@ namespace Irrigation_Management.Repository
         Task<Irrigation_Programs?> GetIrrigationProgram(int Irrigation_Program_Id);
         Task<Irrigation_Programs> CreateIrrigationProgram(TimeOnly Start_Hour, TimeOnly End_Hour, int Irrigations_Per_Week, int Area_Id);
         Task<Irrigation_Programs?> UpdateIrrigationProgram(int Irrigation_Program_Id, TimeOnly Start_Hour, TimeOnly End_Hour, int Irrigations_Per_Week, int Area_Id);
-        Task<Irrigation_Programs?> DeleteIrrigationProgram(int Irrigation_Program_Id);
+        Task<Irrigation_Programs?> DeleteIrrigationProgram(Irrigation_Programs irrigationProgramToDelete);
     }
 
     public class IrrigationProgramsRepository : IIrrigationProgramsRepository
@@ -64,17 +64,16 @@ namespace Irrigation_Management.Repository
             return irrigationProgramToUpdate;
         }
 
-        public async Task<Irrigation_Programs?> DeleteIrrigationProgram(int Irrigation_Program_Id)
+        public async Task<Irrigation_Programs?> DeleteIrrigationProgram(Irrigation_Programs irrigationProgramToDelete)
         {
-            Irrigation_Programs? irrigationProgramToDelete = await GetIrrigationProgram(Irrigation_Program_Id);
-
             if (irrigationProgramToDelete != null)
             {
-                _db.Irrigation_Programs.Remove(irrigationProgramToDelete);
+                irrigationProgramToDelete.IsDeleted = true;
                 await _db.SaveChangesAsync();
             }
 
             return irrigationProgramToDelete;
         }
+
     }
 }

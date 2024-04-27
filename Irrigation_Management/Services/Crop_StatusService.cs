@@ -8,7 +8,7 @@ namespace Irrigation_Management.Services
         Task<List<Crop_Status>> GetAll();
         Task<Crop_Status?> GetCropStatus(int Crop_Status_Id);
         Task<Crop_Status> CreateCropStatus(string Crop_Status_Name, decimal Production_Percentage);
-        Task<Crop_Status?> UpdateCropStatus(int Crop_Status_Id, string Crop_Status_Name, decimal Production_Percentage);
+        Task<Crop_Status?> UpdateCropStatus(int Crop_Status_Id, string? Crop_Status_Name, decimal? Production_Percentage);
         Task<Crop_Status?> DeleteCropStatus(int Crop_Status_Id);
     }
 
@@ -16,7 +16,7 @@ namespace Irrigation_Management.Services
     {
         private readonly ICropStatusRepository _cropStatusRepository;
 
-        public CropStatusService(CropStatusRepository cropStatusRepository)
+        public CropStatusService(ICropStatusRepository cropStatusRepository)
         {
             _cropStatusRepository = cropStatusRepository;
         }
@@ -36,7 +36,7 @@ namespace Irrigation_Management.Services
             return await _cropStatusRepository.CreateCropStatus(Crop_Status_Name, Production_Percentage);
         }
 
-        public async Task<Crop_Status?> UpdateCropStatus(int Crop_Status_Id, string Crop_Status_Name = null, decimal Production_Percentage = -1)
+        public async Task<Crop_Status?> UpdateCropStatus(int Crop_Status_Id, string? Crop_Status_Name = null, decimal? Production_Percentage = -1)
         {
             Crop_Status? cropStatusToUpdate = await _cropStatusRepository.GetCropStatus(Crop_Status_Id);
 
@@ -45,7 +45,7 @@ namespace Irrigation_Management.Services
                 if (Crop_Status_Name == null) { Crop_Status_Name = cropStatusToUpdate.Crop_Status_Name; }
                 if (Production_Percentage == -1) { Production_Percentage = cropStatusToUpdate.Production_Percentage; }
 
-                return await _cropStatusRepository.UpdateCropStatus(Crop_Status_Id, Crop_Status_Name, Production_Percentage);
+                return await _cropStatusRepository.UpdateCropStatus(Crop_Status_Id, Crop_Status_Name, (decimal)Production_Percentage);
             }
 
             return cropStatusToUpdate;
@@ -54,7 +54,17 @@ namespace Irrigation_Management.Services
 
         public async Task<Crop_Status?> DeleteCropStatus(int Crop_Status_Id)
         {
-            return await _cropStatusRepository.DeleteCropStatus(Crop_Status_Id);
+            Crop_Status? cropStatus = await _cropStatusRepository.GetCropStatus(Crop_Status_Id);
+
+            if (cropStatus != null)
+            {
+                cropStatus.IsDeleted = true;
+                // cropStatus.Date = DateTime.Now;
+                return await _cropStatusRepository.DeleteCropStatus(cropStatus);
+            }
+
+            return null;
         }
+
     }
 }

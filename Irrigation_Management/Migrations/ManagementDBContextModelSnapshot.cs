@@ -17,7 +17,7 @@ namespace Irrigation_Management.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -43,43 +43,38 @@ namespace Irrigation_Management.Migrations
                     b.Property<int>("Achievement_Status")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("Achievement_Id");
 
                     b.ToTable("Achievements");
                 });
 
-            modelBuilder.Entity("Irrigation_Management.Models.Allocation_Achievements", b =>
-                {
-                    b.Property<int>("Achievement_Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Users_Id")
-                        .HasColumnType("int");
-
-                    b.HasIndex("Achievement_Id");
-
-                    b.HasIndex("Users_Id");
-
-                    b.ToTable("Allocation_Achievements");
-                });
-
             modelBuilder.Entity("Irrigation_Management.Models.Allocation_Systems", b =>
                 {
-                    b.Property<int>("Game_Id")
+                    b.Property<int>("Allocation_Systems_Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("GamesGame_Id")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Allocation_Systems_Id"));
+
+                    b.Property<int?>("Game_Id")
                         .HasColumnType("int");
 
                     b.Property<int>("System_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SystemsSystem_Id")
+                    b.Property<int>("User_Id")
                         .HasColumnType("int");
 
-                    b.HasIndex("GamesGame_Id");
+                    b.HasKey("Allocation_Systems_Id");
 
-                    b.HasIndex("SystemsSystem_Id");
+                    b.HasIndex("Game_Id");
+
+                    b.HasIndex("System_Id");
+
+                    b.HasIndex("User_Id");
 
                     b.ToTable("Allocation_Systems");
                 });
@@ -96,6 +91,9 @@ namespace Irrigation_Management.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("Production_Percentage")
                         .HasColumnType("decimal(5,2)");
@@ -127,20 +125,17 @@ namespace Irrigation_Management.Migrations
                     b.Property<decimal>("Device_Price")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<int?>("Planting_AreasArea_Id")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("System_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SystemsSystem_Id")
-                        .HasColumnType("int");
-
                     b.HasKey("Device_Id");
 
-                    b.HasIndex("Planting_AreasArea_Id");
+                    b.HasIndex("Area_Id");
 
-                    b.HasIndex("SystemsSystem_Id");
+                    b.HasIndex("System_Id");
 
                     b.ToTable("Devices");
                 });
@@ -153,8 +148,14 @@ namespace Irrigation_Management.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Game_Id"));
 
+                    b.Property<int>("Achievement_Id")
+                        .HasColumnType("int");
+
                     b.Property<decimal?>("End_Score")
                         .HasColumnType("decimal(5,2)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Score_Id")
                         .HasColumnType("int");
@@ -162,14 +163,11 @@ namespace Irrigation_Management.Migrations
                     b.Property<int?>("Stage")
                         .HasColumnType("int");
 
-                    b.Property<int>("Users_Id")
-                        .HasColumnType("int");
-
                     b.HasKey("Game_Id");
 
-                    b.HasIndex("Score_Id");
+                    b.HasIndex("Achievement_Id");
 
-                    b.HasIndex("Users_Id");
+                    b.HasIndex("Score_Id");
 
                     b.ToTable("Games");
                 });
@@ -185,20 +183,17 @@ namespace Irrigation_Management.Migrations
                     b.Property<int>("Device_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DevicesDevice_Id")
-                        .HasColumnType("int");
-
                     b.Property<int>("Irrigation_Actuators_Type_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Irrigation_Actuators_TypesIrrigation_Actuators_Type_Id")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("Irrigation_Actuator_Id");
 
-                    b.HasIndex("DevicesDevice_Id");
+                    b.HasIndex("Device_Id");
 
-                    b.HasIndex("Irrigation_Actuators_TypesIrrigation_Actuators_Type_Id");
+                    b.HasIndex("Irrigation_Actuators_Type_Id");
 
                     b.ToTable("Irrigation_Actuators");
                 });
@@ -215,6 +210,9 @@ namespace Irrigation_Management.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Type_Name")
                         .IsRequired()
@@ -243,15 +241,15 @@ namespace Irrigation_Management.Migrations
                     b.Property<int>("Irrigations_Per_Week")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Planting_AreasArea_Id")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<TimeOnly>("Start_Hour")
                         .HasColumnType("time");
 
                     b.HasKey("Irrigation_Program_Id");
 
-                    b.HasIndex("Planting_AreasArea_Id");
+                    b.HasIndex("Area_Id");
 
                     b.ToTable("Irrigation_Programs");
                 });
@@ -267,17 +265,17 @@ namespace Irrigation_Management.Migrations
                     b.Property<int>("Crop_Status_Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Plant_Id")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int?>("PlantsPlant_Id")
+                    b.Property<int>("Plant_Id")
                         .HasColumnType("int");
 
                     b.HasKey("Area_Id");
 
                     b.HasIndex("Crop_Status_Id");
 
-                    b.HasIndex("PlantsPlant_Id");
+                    b.HasIndex("Plant_Id");
 
                     b.ToTable("Planting_Areas");
                 });
@@ -289,6 +287,9 @@ namespace Irrigation_Management.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Plant_Id"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<float>("Max_PH")
                         .HasColumnType("real");
@@ -325,6 +326,9 @@ namespace Irrigation_Management.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Score_Id"));
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<decimal?>("Success_Rate")
                         .HasColumnType("decimal(5,2)");
 
@@ -353,15 +357,15 @@ namespace Irrigation_Management.Migrations
                     b.Property<DateTime>("Date_Time")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Sensor_Id")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int?>("Sensor_TypeSensor_Id")
+                    b.Property<int>("Sensor_Id")
                         .HasColumnType("int");
 
                     b.HasKey("Sensors_Data_Id");
 
-                    b.HasIndex("Sensor_TypeSensor_Id");
+                    b.HasIndex("Sensor_Id");
 
                     b.ToTable("Sensor_Data");
                 });
@@ -378,6 +382,9 @@ namespace Irrigation_Management.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Measure_Unit")
                         .IsRequired()
@@ -405,20 +412,17 @@ namespace Irrigation_Management.Migrations
                     b.Property<int>("Device_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DevicesDevice_Id")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Sensor_Type_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Sensor_TypesSensor_Type_Id")
-                        .HasColumnType("int");
-
                     b.HasKey("Sensor_Id");
 
-                    b.HasIndex("DevicesDevice_Id");
+                    b.HasIndex("Device_Id");
 
-                    b.HasIndex("Sensor_TypesSensor_Type_Id");
+                    b.HasIndex("Sensor_Type_Id");
 
                     b.ToTable("Sensors");
                 });
@@ -430,6 +434,9 @@ namespace Irrigation_Management.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("System_Id"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Systems_Name")
                         .IsRequired()
@@ -448,6 +455,9 @@ namespace Irrigation_Management.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("User_Type_Id"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("User_Type_Name")
                         .IsRequired()
@@ -471,6 +481,9 @@ namespace Irrigation_Management.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Is_Active")
                         .HasColumnType("int");
@@ -501,12 +514,9 @@ namespace Irrigation_Management.Migrations
                     b.Property<int>("User_Type_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("User_TypesUser_Type_Id")
-                        .HasColumnType("int");
-
                     b.HasKey("Users_Id");
 
-                    b.HasIndex("User_TypesUser_Type_Id");
+                    b.HasIndex("User_Type_Id");
 
                     b.ToTable("Users");
                 });
@@ -528,20 +538,17 @@ namespace Irrigation_Management.Migrations
                     b.Property<int>("Device_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DevicesDevice_Id")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Water_Management_Type_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Water_Management_TypesWater_Management_Type_Id")
-                        .HasColumnType("int");
-
                     b.HasKey("Water_Management_Id");
 
-                    b.HasIndex("DevicesDevice_Id");
+                    b.HasIndex("Device_Id");
 
-                    b.HasIndex("Water_Management_TypesWater_Management_Type_Id");
+                    b.HasIndex("Water_Management_Type_Id");
 
                     b.ToTable("Water_Managements");
                 });
@@ -559,6 +566,9 @@ namespace Irrigation_Management.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Material")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -574,161 +584,174 @@ namespace Irrigation_Management.Migrations
                     b.ToTable("Water_Management_Types");
                 });
 
-            modelBuilder.Entity("Irrigation_Management.Models.Allocation_Achievements", b =>
+            modelBuilder.Entity("Irrigation_Management.Models.Allocation_Systems", b =>
                 {
-                    b.HasOne("Irrigation_Management.Models.Achievements", "Achievements")
+                    b.HasOne("Irrigation_Management.Models.Games", "Game")
+                        .WithMany()
+                        .HasForeignKey("Game_Id");
+
+                    b.HasOne("Irrigation_Management.Models.Systems", "System")
+                        .WithMany()
+                        .HasForeignKey("System_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Irrigation_Management.Models.Users", "User")
+                        .WithMany()
+                        .HasForeignKey("User_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("System");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Irrigation_Management.Models.Devices", b =>
+                {
+                    b.HasOne("Irrigation_Management.Models.Planting_Areas", "Planting_Area")
+                        .WithMany()
+                        .HasForeignKey("Area_Id");
+
+                    b.HasOne("Irrigation_Management.Models.Systems", "System")
+                        .WithMany()
+                        .HasForeignKey("System_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Planting_Area");
+
+                    b.Navigation("System");
+                });
+
+            modelBuilder.Entity("Irrigation_Management.Models.Games", b =>
+                {
+                    b.HasOne("Irrigation_Management.Models.Achievements", "Achievement")
                         .WithMany()
                         .HasForeignKey("Achievement_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Irrigation_Management.Models.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("Users_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Achievements");
-
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("Irrigation_Management.Models.Allocation_Systems", b =>
-                {
-                    b.HasOne("Irrigation_Management.Models.Games", "Games")
-                        .WithMany()
-                        .HasForeignKey("GamesGame_Id");
-
-                    b.HasOne("Irrigation_Management.Models.Systems", "Systems")
-                        .WithMany()
-                        .HasForeignKey("SystemsSystem_Id");
-
-                    b.Navigation("Games");
-
-                    b.Navigation("Systems");
-                });
-
-            modelBuilder.Entity("Irrigation_Management.Models.Devices", b =>
-                {
-                    b.HasOne("Irrigation_Management.Models.Planting_Areas", "Planting_Areas")
-                        .WithMany()
-                        .HasForeignKey("Planting_AreasArea_Id");
-
-                    b.HasOne("Irrigation_Management.Models.Systems", "Systems")
-                        .WithMany()
-                        .HasForeignKey("SystemsSystem_Id");
-
-                    b.Navigation("Planting_Areas");
-
-                    b.Navigation("Systems");
-                });
-
-            modelBuilder.Entity("Irrigation_Management.Models.Games", b =>
-                {
-                    b.HasOne("Irrigation_Management.Models.Score", "Score")
+                    b.HasOne("Irrigation_Management.Models.Score", "Scor")
                         .WithMany()
                         .HasForeignKey("Score_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Irrigation_Management.Models.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("Users_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Achievement");
 
-                    b.Navigation("Score");
-
-                    b.Navigation("Users");
+                    b.Navigation("Scor");
                 });
 
             modelBuilder.Entity("Irrigation_Management.Models.Irrigation_Actuators", b =>
                 {
-                    b.HasOne("Irrigation_Management.Models.Devices", "Devices")
+                    b.HasOne("Irrigation_Management.Models.Devices", "Device")
                         .WithMany()
-                        .HasForeignKey("DevicesDevice_Id");
+                        .HasForeignKey("Device_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Irrigation_Management.Models.Irrigation_Actuators_Types", "Irrigation_Actuators_Types")
+                    b.HasOne("Irrigation_Management.Models.Irrigation_Actuators_Types", "Irrigation_Actuators_Type")
                         .WithMany()
-                        .HasForeignKey("Irrigation_Actuators_TypesIrrigation_Actuators_Type_Id");
+                        .HasForeignKey("Irrigation_Actuators_Type_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Devices");
+                    b.Navigation("Device");
 
-                    b.Navigation("Irrigation_Actuators_Types");
+                    b.Navigation("Irrigation_Actuators_Type");
                 });
 
             modelBuilder.Entity("Irrigation_Management.Models.Irrigation_Programs", b =>
                 {
-                    b.HasOne("Irrigation_Management.Models.Planting_Areas", "Planting_Areas")
+                    b.HasOne("Irrigation_Management.Models.Planting_Areas", "Planting_Area")
                         .WithMany()
-                        .HasForeignKey("Planting_AreasArea_Id");
+                        .HasForeignKey("Area_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Planting_Areas");
+                    b.Navigation("Planting_Area");
                 });
 
             modelBuilder.Entity("Irrigation_Management.Models.Planting_Areas", b =>
                 {
-                    b.HasOne("Irrigation_Management.Models.Crop_Status", "Crop_Status")
+                    b.HasOne("Irrigation_Management.Models.Crop_Status", "Crop_Statu")
                         .WithMany()
                         .HasForeignKey("Crop_Status_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Irrigation_Management.Models.Plants", "Plants")
+                    b.HasOne("Irrigation_Management.Models.Plants", "Plant")
                         .WithMany()
-                        .HasForeignKey("PlantsPlant_Id");
+                        .HasForeignKey("Plant_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Crop_Status");
+                    b.Navigation("Crop_Statu");
 
-                    b.Navigation("Plants");
+                    b.Navigation("Plant");
                 });
 
             modelBuilder.Entity("Irrigation_Management.Models.Sensor_Data", b =>
                 {
-                    b.HasOne("Irrigation_Management.Models.Sensors", "Sensor_Type")
+                    b.HasOne("Irrigation_Management.Models.Sensors", "Sensor")
                         .WithMany()
-                        .HasForeignKey("Sensor_TypeSensor_Id");
+                        .HasForeignKey("Sensor_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Sensor_Type");
+                    b.Navigation("Sensor");
                 });
 
             modelBuilder.Entity("Irrigation_Management.Models.Sensors", b =>
                 {
-                    b.HasOne("Irrigation_Management.Models.Devices", "Devices")
+                    b.HasOne("Irrigation_Management.Models.Devices", "Device")
                         .WithMany()
-                        .HasForeignKey("DevicesDevice_Id");
+                        .HasForeignKey("Device_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Irrigation_Management.Models.Sensor_Types", "Sensor_Types")
+                    b.HasOne("Irrigation_Management.Models.Sensor_Types", "Sensor_Type")
                         .WithMany()
-                        .HasForeignKey("Sensor_TypesSensor_Type_Id");
+                        .HasForeignKey("Sensor_Type_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Devices");
+                    b.Navigation("Device");
 
-                    b.Navigation("Sensor_Types");
+                    b.Navigation("Sensor_Type");
                 });
 
             modelBuilder.Entity("Irrigation_Management.Models.Users", b =>
                 {
-                    b.HasOne("Irrigation_Management.Models.User_Types", "User_Types")
+                    b.HasOne("Irrigation_Management.Models.User_Types", "User_Type")
                         .WithMany()
-                        .HasForeignKey("User_TypesUser_Type_Id");
+                        .HasForeignKey("User_Type_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("User_Types");
+                    b.Navigation("User_Type");
                 });
 
             modelBuilder.Entity("Irrigation_Management.Models.Water_Management", b =>
                 {
-                    b.HasOne("Irrigation_Management.Models.Devices", "Devices")
+                    b.HasOne("Irrigation_Management.Models.Devices", "Device")
                         .WithMany()
-                        .HasForeignKey("DevicesDevice_Id");
+                        .HasForeignKey("Device_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Irrigation_Management.Models.Water_Management_Types", "Water_Management_Types")
+                    b.HasOne("Irrigation_Management.Models.Water_Management_Types", "Water_Management_Type")
                         .WithMany()
-                        .HasForeignKey("Water_Management_TypesWater_Management_Type_Id");
+                        .HasForeignKey("Water_Management_Type_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Devices");
+                    b.Navigation("Device");
 
-                    b.Navigation("Water_Management_Types");
+                    b.Navigation("Water_Management_Type");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,7 +10,7 @@ namespace Irrigation_Management.Services
         Task<List<Irrigation_Programs>> GetAll();
         Task<Irrigation_Programs?> GetIrrigationProgram(int Irrigation_Program_Id);
         Task<Irrigation_Programs> CreateIrrigationProgram(TimeOnly Start_Hour, TimeOnly End_Hour, int Irrigations_Per_Week, int Area_Id);
-        Task<Irrigation_Programs?> UpdateIrrigationProgram(int Irrigation_Program_Id, TimeOnly Start_Hour, TimeOnly End_Hour, int Irrigations_Per_Week, int Area_Id);
+        Task<Irrigation_Programs?> UpdateIrrigationProgram(int Irrigation_Program_Id, TimeOnly? Start_Hour, TimeOnly? End_Hour, int? Irrigations_Per_Week, int? Area_Id);
         Task<Irrigation_Programs?> DeleteIrrigationProgram(int Irrigation_Program_Id);
     }
 
@@ -38,16 +38,16 @@ namespace Irrigation_Management.Services
             return await _irrigationProgramsRepository.CreateIrrigationProgram(Start_Hour, End_Hour, Irrigations_Per_Week, Area_Id);
         }
 
-        public async Task<Irrigation_Programs?> UpdateIrrigationProgram(int Irrigation_Program_Id, TimeOnly Start_Hour = default, TimeOnly End_Hour = default, int Irrigations_Per_Week = -1, int Area_Id = -1)
+        public async Task<Irrigation_Programs?> UpdateIrrigationProgram(int Irrigation_Program_Id, TimeOnly? Start_Hour = default, TimeOnly? End_Hour = default, int? Irrigations_Per_Week = -1, int? Area_Id = -1)
         {
             Irrigation_Programs? irrigationProgramToUpdate = await _irrigationProgramsRepository.GetIrrigationProgram(Irrigation_Program_Id);
 
             if (irrigationProgramToUpdate != null)
             {
-                if (Start_Hour != default) { irrigationProgramToUpdate.Start_Hour = Start_Hour; }
-                if (End_Hour != default) { irrigationProgramToUpdate.End_Hour = End_Hour; }
-                if (Irrigations_Per_Week != -1) { irrigationProgramToUpdate.Irrigations_Per_Week = Irrigations_Per_Week; }
-                if (Area_Id != -1) { irrigationProgramToUpdate.Area_Id = Area_Id; }
+                if (Start_Hour != default) { irrigationProgramToUpdate.Start_Hour = (TimeOnly)Start_Hour; }
+                if (End_Hour != default) { irrigationProgramToUpdate.End_Hour = (TimeOnly)End_Hour; }
+                if (Irrigations_Per_Week != -1) { irrigationProgramToUpdate.Irrigations_Per_Week = (int)Irrigations_Per_Week; }
+                if (Area_Id != -1) { irrigationProgramToUpdate.Area_Id = (int)Area_Id; }
 
                 return await _irrigationProgramsRepository.UpdateIrrigationProgram(Irrigation_Program_Id, irrigationProgramToUpdate.Start_Hour, irrigationProgramToUpdate.End_Hour, irrigationProgramToUpdate.Irrigations_Per_Week, irrigationProgramToUpdate.Area_Id);
             }
@@ -57,7 +57,16 @@ namespace Irrigation_Management.Services
 
         public async Task<Irrigation_Programs?> DeleteIrrigationProgram(int Irrigation_Program_Id)
         {
-            return await _irrigationProgramsRepository.DeleteIrrigationProgram(Irrigation_Program_Id);
+            Irrigation_Programs? program = await _irrigationProgramsRepository.GetIrrigationProgram(Irrigation_Program_Id);
+
+            if (program != null)
+            {
+                program.IsDeleted = true;
+                // program.Date = DateTime.Now;
+                return await _irrigationProgramsRepository.DeleteIrrigationProgram(program);
+            }
+
+            return null;
         }
     }
 }

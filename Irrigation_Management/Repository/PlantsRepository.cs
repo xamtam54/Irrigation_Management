@@ -11,7 +11,7 @@ namespace Irrigation_Management.Repository
         Task<Plants?> GetPlant(int Plant_Id);
         Task<Plants> CreatePlants(string Plant_Name, string Specie, float Min_PH, float Max_PH, float Requirement_Liters);
         Task<Plants?> UpdatePlants(int Plant_Id, string Plant_Name, string Specie, float Min_PH, float Max_PH, float Requirement_Liters);
-        Task<Plants?> DeletePlants(int Plant_Id);
+        Task<Plants?> DeletePlants(Plants plantToDelete);
     }
     public class PlantsRepository : IPlantsRepository
     {
@@ -37,13 +37,11 @@ namespace Irrigation_Management.Repository
             return newPlant;
         }
 
-        public async Task<Plants?> DeletePlants(int Plant_Id)
+        public async Task<Plants?> DeletePlants(Plants plantToDelete)
         {
-            Plants? plantToDelete = await GetPlant(Plant_Id);
-
             if (plantToDelete != null)
             {
-                _db.Plants.Remove(plantToDelete);
+                plantToDelete.IsDeleted = true;
                 await _db.SaveChangesAsync();
             }
 

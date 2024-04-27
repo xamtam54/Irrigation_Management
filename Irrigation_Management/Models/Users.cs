@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Irrigation_Management.Models
 {
@@ -22,7 +23,13 @@ namespace Irrigation_Management.Models
         [Range(0, 1, ErrorMessage = "El valor debe estar entre 0 y 1")]
         public int Is_Active { get; set; } = 1;
         //-------------------------------------------------------------------------------------
+        [ForeignKey("User_Type")]
+
         public required int User_Type_Id { get; set; }
-        public User_Types? User_Types { get; set; }
+        public User_Types? User_Type { get; set; }
+
+        //-------------------------------------------------------------------------------------
+
+        public bool IsDeleted { get; internal set; } = false;
     }
 }

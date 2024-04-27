@@ -10,7 +10,7 @@ namespace Irrigation_Management.Repository
         Task<Sensor_Types?> GetSensorType(int Sensor_Type_Id);
         Task<Sensor_Types> CreateSensorType(string Sensor_Type, string Description, string Measure_Unit);
         Task<Sensor_Types?> UpdateSensorType(int Sensor_Type_Id, string Sensor_Type, string Description, string Measure_Unit);
-        Task<Sensor_Types?> DeleteSensorType(int Sensor_Type_Id);
+        Task<Sensor_Types?> DeleteSensorType(Sensor_Types typeToDelete);
     }
 
     public class SensorTypesRepository : ISensorTypesRepository
@@ -61,13 +61,11 @@ namespace Irrigation_Management.Repository
             return typeToUpdate;
         }
 
-        public async Task<Sensor_Types?> DeleteSensorType(int Sensor_Type_Id)
+        public async Task<Sensor_Types?> DeleteSensorType(Sensor_Types typeToDelete)
         {
-            Sensor_Types? typeToDelete = await GetSensorType(Sensor_Type_Id);
-
             if (typeToDelete != null)
             {
-                _db.Sensor_Types.Remove(typeToDelete);
+                typeToDelete.IsDeleted = true;
                 await _db.SaveChangesAsync();
             }
 

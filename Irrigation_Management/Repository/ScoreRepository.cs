@@ -10,7 +10,7 @@ namespace Irrigation_Management.Repository
         Task<Score?> GetScore(int scoreId);
         Task<Score> CreateScore(decimal? successRate, decimal? waterSaved, decimal? total);
         Task<Score?> UpdateScore(int scoreId, decimal? successRate, decimal? waterSaved, decimal? total);
-        Task<Score?> DeleteScore(int scoreId);
+        Task<Score?> DeleteScore(Score scoreToDelete);
     }
 
     public class ScoreRepository : IScoreRepository
@@ -62,13 +62,11 @@ namespace Irrigation_Management.Repository
             return scoreToUpdate;
         }
 
-        public async Task<Score?> DeleteScore(int scoreId)
+        public async Task<Score?> DeleteScore(Score scoreToDelete)
         {
-            Score? scoreToDelete = await GetScore(scoreId);
-
             if (scoreToDelete != null)
             {
-                _db.Scores.Remove(scoreToDelete);
+                scoreToDelete.IsDeleted = true;
                 await _db.SaveChangesAsync();
             }
 

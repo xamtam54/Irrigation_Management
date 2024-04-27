@@ -13,5 +13,7 @@ namespace Irrigation_Management.Models
         public decimal? Water_Saved { get; set; }
         [Column(TypeName = "decimal(5,2)")]
         public decimal? Total { get; set; }
+        //-------------------------------------------------------------------------------------
+        public bool IsDeleted { get; internal set; } = false;
     }
 }

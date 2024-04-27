@@ -15,7 +15,7 @@ namespace Irrigation_Management.Services
     public class User_TypesService : IUser_TypesService
     {
         public readonly IUser_TypesRepository _users_TypesRepository;
-        public User_TypesService(User_TypesRepository users_TypesRepository)
+        public User_TypesService(IUser_TypesRepository users_TypesRepository)
         {
             _users_TypesRepository = users_TypesRepository;
         }
@@ -26,7 +26,16 @@ namespace Irrigation_Management.Services
 
         public async Task<User_Types?> DeleteUserType(int User_Type_Id)
         {
-            return await _users_TypesRepository.DeleteUserType(User_Type_Id);
+            User_Types? userType = await _users_TypesRepository.GetUserType(User_Type_Id);
+
+            if (userType != null)
+            {
+                userType.IsDeleted = true;
+                // userType.Date = DateTime.Now;
+                return await _users_TypesRepository.DeleteUserType(userType);
+            }
+
+            return null;
         }
 
         public async Task<List<User_Types>> GetAll()

@@ -10,7 +10,7 @@ namespace Irrigation_Management.Repository
         Task<Water_Management?> GetWaterManagement(int Water_Management_Id);
         Task<Water_Management> CreateWaterManagement(float Capacity, float Collection_Hour, int Device_Id, int Water_Management_Type_Id);
         Task<Water_Management?> UpdateWaterManagement(int Water_Management_Id, float Capacity, float Collection_Hour, int Device_Id, int Water_Management_Type_Id);
-        Task<Water_Management?> DeleteWaterManagement(int Water_Management_Id);
+        Task<Water_Management?> DeleteWaterManagement(Water_Management waterManagementToDelete);
     }
 
     public class WaterManagementRepository : IWaterManagementRepository
@@ -64,13 +64,11 @@ namespace Irrigation_Management.Repository
             return waterManagementToUpdate;
         }
 
-        public async Task<Water_Management?> DeleteWaterManagement(int Water_Management_Id)
+        public async Task<Water_Management?> DeleteWaterManagement(Water_Management waterManagementToDelete)
         {
-            Water_Management? waterManagementToDelete = await GetWaterManagement(Water_Management_Id);
-
             if (waterManagementToDelete != null)
             {
-                _db.Water_Managements.Remove(waterManagementToDelete);
+                waterManagementToDelete.IsDeleted = true;
                 await _db.SaveChangesAsync();
             }
 

@@ -16,6 +16,7 @@ namespace Irrigation_Management.Models
         public required float Requirement_Liters { get; set; }
         //-------------------------------------------------------------------------------------
         public DateTime Planting_Date { get; set; } = DateTime.Now;
-
+        //-------------------------------------------------------------------------------------
+        public bool IsDeleted { get; internal set; } = false;
     }
 }

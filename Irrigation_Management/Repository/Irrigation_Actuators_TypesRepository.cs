@@ -10,7 +10,7 @@ namespace Irrigation_Management.Repository
         Task<Irrigation_Actuators_Types?> GetIrrigationActuatorType(int Irrigation_Actuators_Type_Id);
         Task<Irrigation_Actuators_Types> CreateIrrigationActuatorType(string Type_Name, string Description);
         Task<Irrigation_Actuators_Types?> UpdateIrrigationActuatorType(int Irrigation_Actuators_Type_Id, string Type_Name, string Description);
-        Task<Irrigation_Actuators_Types?> DeleteIrrigationActuatorType(int Irrigation_Actuators_Type_Id);
+        Task<Irrigation_Actuators_Types?> DeleteIrrigationActuatorType(Irrigation_Actuators_Types typeToDelete);
     }
 
     public class IrrigationActuatorsTypesRepository : IIrrigationActuatorsTypesRepository
@@ -59,17 +59,16 @@ namespace Irrigation_Management.Repository
             return typeToUpdate;
         }
 
-        public async Task<Irrigation_Actuators_Types?> DeleteIrrigationActuatorType(int Irrigation_Actuators_Type_Id)
+        public async Task<Irrigation_Actuators_Types?> DeleteIrrigationActuatorType(Irrigation_Actuators_Types typeToDelete)
         {
-            Irrigation_Actuators_Types? typeToDelete = await GetIrrigationActuatorType(Irrigation_Actuators_Type_Id);
-
             if (typeToDelete != null)
             {
-                _db.Irrigation_Actuators_Types.Remove(typeToDelete);
+                typeToDelete.IsDeleted = true;
                 await _db.SaveChangesAsync();
             }
 
             return typeToDelete;
         }
+
     }
 }

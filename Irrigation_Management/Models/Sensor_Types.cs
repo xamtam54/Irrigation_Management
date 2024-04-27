@@ -13,5 +13,7 @@ namespace Irrigation_Management.Models
         public required string Description { get; set; }
         [StringLength(50)]
         public required string Measure_Unit { get; set; }
+        //-------------------------------------------------------------------------------------
+        public bool IsDeleted { get; internal set; } = false;
     }
 }

@@ -15,7 +15,7 @@ namespace Irrigation_Management.Services
     public class SystemsService : ISystemsService
     {
         public readonly ISystemsRepository _systemRepository;
-        public SystemsService(SystemsRepository systemRepository)
+        public SystemsService(ISystemsRepository systemRepository)
         {
             _systemRepository = systemRepository;
         }
@@ -26,7 +26,16 @@ namespace Irrigation_Management.Services
 
         public async Task<Systems?> DeleteSystem(int System_Id)
         {
-            return await _systemRepository.DeleteSystem(System_Id);
+            Systems? system = await _systemRepository.GetSystem(System_Id);
+
+            if (system != null)
+            {
+                system.IsDeleted = true;
+                // system.Date = DateTime.Now;
+                return await _systemRepository.DeleteSystem(system);
+            }
+
+            return null;
         }
 
         public async Task<Systems?> GetSystem(int System_Id)

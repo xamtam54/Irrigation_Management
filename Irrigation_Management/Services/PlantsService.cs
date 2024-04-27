@@ -8,13 +8,13 @@ namespace Irrigation_Management.Services
         Task<List<Plants>> GetPlants();
         Task<Plants?> GetPlant(int Plant_Id);
         Task<Plants> CreatePlants(string Plant_Name, string Specie, float Min_PH, float Max_PH, float Requirement_Liters);
-        Task<Plants?> UpdatePlants(int Plant_Id, string Plant_Name, string Specie, float Min_PH, float Max_PH, float Requirement_Liters);
+        Task<Plants?> UpdatePlants(int Plant_Id, string? Plant_Name, string? Specie, float? Min_PH, float? Max_PH, float? Requirement_Liters);
         Task<Plants?> DeletePlants(int Plant_Id);
     }
     public class PlantsService : IPlantsService
     {
         public readonly IPlantsRepository _plantsRepository;
-        public PlantsService(PlantsRepository plantsRepository)
+        public PlantsService(IPlantsRepository plantsRepository)
         {
             _plantsRepository = plantsRepository;
         }
@@ -34,7 +34,7 @@ namespace Irrigation_Management.Services
             return await _plantsRepository.CreatePlants(Plant_Name, Specie, Min_PH, Max_PH, Requirement_Liters);
         }
 
-        public async Task<Plants?> UpdatePlants(int Plant_Id, string Plant_Name = null, string Specie = null, float Min_PH = -1, float Max_PH = -1, float Requirement_Liters = -1)
+        public async Task<Plants?> UpdatePlants(int Plant_Id, string? Plant_Name = null, string? Specie = null, float? Min_PH = -1, float? Max_PH = -1, float? Requirement_Liters = -1)
         {
             Plants? plantToUpdate = await _plantsRepository.GetPlant(Plant_Id);
 
@@ -54,7 +54,16 @@ namespace Irrigation_Management.Services
 
         public async Task<Plants?> DeletePlants(int Plant_Id)
         {
-            return await _plantsRepository.DeletePlants(Plant_Id);
+            Plants? plant = await _plantsRepository.GetPlant(Plant_Id);
+
+            if (plant != null)
+            {
+                plant.IsDeleted = true;
+                // plant.Date = DateTime.Now;
+                return await _plantsRepository.DeletePlants(plant);
+            }
+
+            return null;
         }
     }
 }

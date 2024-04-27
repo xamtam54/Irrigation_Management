@@ -13,11 +13,13 @@ namespace Irrigation_Management.Models
         [Column(TypeName = "decimal(5,2)")]
         public decimal? End_Score { get; set; } = 0.0m;
         //-------------------------------------------------------------
-        [ForeignKey("Users")]
-        public int Users_Id { get; set; }
-        public Users? Users { get; set; }
-        [ForeignKey("Score")]
+        [ForeignKey("Achievement")]
+        public int Achievement_Id { get; set; }
+        public Achievements? Achievement { get; set; }
+        [ForeignKey("Scor")]
         public int Score_Id { get; set; }
-        public Score? Score { get; set; }
+        public Score? Scor { get; set; }
+        //-------------------------------------------------------------------------------------
+        public bool IsDeleted { get; internal set; } = false;
     }
 }

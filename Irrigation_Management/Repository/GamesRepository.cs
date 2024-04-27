@@ -8,12 +8,10 @@ namespace Irrigation_Management.Repository
     {
         Task<List<Games>> GetAll();
         Task<Games?> GetGame(int gameId);
-        Task<Games> CreateGame(int userId, int scoreId, int? stage = null, decimal? endScore = null);
+        Task<Games> CreateGame(int Achievement_Id, int scoreId, int? stage = null, decimal? endScore = null);
         Task<Games?> UpdateGame(int gameId, int? stage = null, decimal? endScore = null);
-        Task<Games?> DeleteGame(int gameId);
+        Task<Games?> DeleteGame(Games gameToDelete);
         //----------------------------------------------------------
-        Task<Allocation_Systems> CreateAllocationSystem(int gameId, int systemId);
-        Task<Allocation_Systems?> DeleteAllocationSystem(int gameId, int systemId);
 
     }
 
@@ -36,11 +34,11 @@ namespace Irrigation_Management.Repository
             return await _db.Games.FindAsync(gameId);
         }
 
-        public async Task<Games> CreateGame(int userId, int scoreId, int? stage = null, decimal? endScore = 0.0m)
+        public async Task<Games> CreateGame(int Achievement_Id, int scoreId, int? stage = null, decimal? endScore = 0.0m)
         {
             Games newGame = new Games
             {
-                Users_Id = userId,
+                Achievement_Id = Achievement_Id,
                 Score_Id = scoreId,
                 Stage = stage,
                 End_Score = endScore
@@ -67,58 +65,16 @@ namespace Irrigation_Management.Repository
         }
 
 
-        public async Task<Games?> DeleteGame(int gameId)
+        public async Task<Games?> DeleteGame(Games gameToDelete)
         {
-            Games? gameToDelete = await GetGame(gameId);
-
             if (gameToDelete != null)
             {
-                _db.Games.Remove(gameToDelete);
+                gameToDelete.IsDeleted = true;
                 await _db.SaveChangesAsync();
             }
 
             return gameToDelete;
         }
-        //--------------------------------------------------------------------------------------------
-
-        public async Task<Allocation_Systems> CreateAllocationSystem(int gameId, int systemId)
-        {
-            var system = await _db.Systems.FindAsync(systemId);
-            var game = await _db.Games.FindAsync(gameId);
-
-            if (game == null || system == null)
-            {
-                throw new InvalidOperationException("The game or system does not exist");
-            }
-
-            var existingAllocation = await _db.Allocation_Systems.FirstOrDefaultAsync(a => a.Game_Id == gameId && a.System_Id == systemId);
-            if (existingAllocation != null)
-            {
-                throw new InvalidOperationException("An allocation system for this game and system already exists.");
-            }
-
-            var allocationSystem = new Allocation_Systems
-            {
-                Game_Id = gameId,
-                System_Id = systemId
-            };
-
-            await _db.Allocation_Systems.AddAsync(allocationSystem);
-            await _db.SaveChangesAsync();
-            return allocationSystem;
-        }
-
-        public async Task<Allocation_Systems?> DeleteAllocationSystem(int gameId, int systemId)
-        {
-            var allocationSystem = await _db.Allocation_Systems.FirstOrDefaultAsync(a => a.Game_Id == gameId && a.System_Id == systemId);
-
-            if (allocationSystem != null)
-            {
-                _db.Allocation_Systems.Remove(allocationSystem);
-                await _db.SaveChangesAsync();
-            }
-
-            return allocationSystem;
-        }
+        
     }
 }

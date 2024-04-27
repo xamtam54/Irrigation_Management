@@ -9,13 +9,13 @@ namespace Irrigation_Management.Services
         Task<List<Devices>> GetDevices();
         Task<Devices?> GetDevice(int Device_Id);
         Task<Devices> CreateDevice(string Device_Name, decimal Device_Price, int Device_Enabled, int System_Id, int? Area_Id);
-        Task<Devices?> UpdateDevice(int Device_Id, string Device_Name, decimal Device_Price, int Device_Enabled, int System_Id, int? Area_Id);
+        Task<Devices?> UpdateDevice(int Device_Id, string? Device_Name, decimal? Device_Price, int? Device_Enabled, int? System_Id, int? Area_Id);
         Task<Devices?> DeleteDevice(int Device_Id);
     }
     public class DevicesService : IDevicesService
     {
         public readonly IDevicesRepository _devicesRepository;
-        public DevicesService(DevicesRepository devicesRepository)
+        public DevicesService(IDevicesRepository devicesRepository)
         {
             _devicesRepository = devicesRepository;
         }
@@ -27,8 +27,18 @@ namespace Irrigation_Management.Services
 
         public async Task<Devices?> DeleteDevice(int Device_Id)
         {
-            return await _devicesRepository.DeleteDevice(Device_Id);
+            Devices? device = await _devicesRepository.GetDevice(Device_Id);
+
+            if (device != null)
+            {
+                device.IsDeleted = true;
+                // device.Date = DateTime.Now;
+                return await _devicesRepository.DeleteDevice(device);
+            }
+
+            return null;
         }
+
 
         public async Task<Devices?> GetDevice(int Device_Id)
         {
@@ -40,7 +50,7 @@ namespace Irrigation_Management.Services
             return await _devicesRepository.GetDevices();
         }
 
-        public async Task<Devices?> UpdateDevice(int Device_Id, string Device_Name, decimal Device_Price = -1, int Device_Enabled =  -1, int System_Id = -1, int? Area_Id = -1)
+        public async Task<Devices?> UpdateDevice(int Device_Id, string? Device_Name, decimal? Device_Price = -1, int? Device_Enabled =  -1, int? System_Id = -1, int? Area_Id = -1)
         {
             Devices? deviceToUpdate = await _devicesRepository.GetDevice(Device_Id);
 
@@ -53,7 +63,7 @@ namespace Irrigation_Management.Services
                 if (Area_Id == -1) { Area_Id = deviceToUpdate.Area_Id; }
 
 
-                await _devicesRepository.UpdateDevice(Device_Id, Device_Name, Device_Price, Device_Enabled, System_Id, Area_Id);
+                await _devicesRepository.UpdateDevice(Device_Id, Device_Name, (decimal)Device_Price, (int)Device_Enabled, (int)System_Id, Area_Id);
             }
 
             return deviceToUpdate;

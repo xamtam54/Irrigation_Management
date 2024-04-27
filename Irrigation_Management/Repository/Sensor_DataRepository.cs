@@ -10,7 +10,7 @@ namespace Irrigation_Management.Repository
         Task<Sensor_Data?> GetSensorData(int Sensor_Data_Id);
         Task<Sensor_Data> CreateSensorData(DateTime Date_Time, float Data, int Sensor_Id);
         Task<Sensor_Data?> UpdateSensorData(int Sensor_Data_Id, DateTime Date_Time, float Data, int Sensor_Id);
-        Task<Sensor_Data?> DeleteSensorData(int Sensor_Data_Id);
+        Task<Sensor_Data?> DeleteSensorData(Sensor_Data dataToDelete);
     }
 
     public class SensorDataRepository : ISensorDataRepository
@@ -61,13 +61,11 @@ namespace Irrigation_Management.Repository
             return dataToUpdate;
         }
 
-        public async Task<Sensor_Data?> DeleteSensorData(int Sensor_Data_Id)
+        public async Task<Sensor_Data?> DeleteSensorData(Sensor_Data dataToDelete)
         {
-            Sensor_Data? dataToDelete = await GetSensorData(Sensor_Data_Id);
-
             if (dataToDelete != null)
             {
-                _db.Sensor_Data.Remove(dataToDelete);
+                dataToDelete.IsDeleted = true;
                 await _db.SaveChangesAsync();
             }
 

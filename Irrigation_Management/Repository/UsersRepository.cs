@@ -11,11 +11,12 @@ namespace Irrigation_Management.Repository
         Task<Users?> GetUser(int User_Id); 
         Task<Users> CreateUser(string UserName, string Names, string Surnames, string Password, string Email, int User_Type_Id);
         Task<Users?> UpdateUser(int Users_Id, string UserName, string Names, string Surnames, string Password, string Email, int Is_Active, int User_Type_Id);
-        Task<Users?> DeleteUser(int User_Id);
+        Task<Users?> DeleteUser(Users user);
 
         //-------------------------------------------------------------
-        Task<Allocation_Achievements> CreateAllocation(int userId, int achievementId);
-        Task<Allocation_Achievements?> DeleteAllocation(int userId, int achievementId);
+        //----------------------------------------------------------
+        Task<Allocation_Systems> CreateAllocationSystem(int? gameId = -1, int systemId = -1, int userId = -1);
+        Task<Allocation_Systems?> DeleteAllocationSystem(int? gameId = -1, int systemId = -1, int userId = -1);
     }
     public class UsersRepository : IUsersRepository
     {
@@ -72,62 +73,64 @@ namespace Irrigation_Management.Repository
         }
 
 
-        public async Task<Users?> DeleteUser(int User_Id)
+        public async Task<Users?> DeleteUser(Users userToDelete)
         {
-            Users? userToDelete = await GetUser(User_Id);
 
             if (userToDelete != null)
             {
-                _db.Users.Remove(userToDelete);
+                userToDelete.IsDeleted = true;
                 await _db.SaveChangesAsync();
             }
 
             return userToDelete;
         }
 
-        //----------------------------------------------------------------------------
-        public async Task<Allocation_Achievements> CreateAllocation(int userId, int achievementId)
+        //--------------------------------------------------------------------------------------------
+
+        public async Task<Allocation_Systems> CreateAllocationSystem(int? gameId = -1, int systemId = -1, int userId = -1)
         {
-            var existingAllocation = await _db.Allocation_Achievements
-                .SingleOrDefaultAsync(a => a.Users_Id == userId && a.Achievement_Id == achievementId);
-
-            if (existingAllocation != null)
-            {
-                throw new InvalidOperationException("already exists");
-            }
-
+            var system = await _db.Systems.FindAsync(systemId);
+            var game = await _db.Games.FindAsync(gameId);
             var user = await _db.Users.FindAsync(userId);
-            var achievement = await _db.Achievements.FindAsync(achievementId);
 
-            if (user == null || achievement == null)
+
+            if (system != null && user != null)
             {
-                throw new InvalidOperationException("User or achievement does not exist");
+                var existingAllocation = await _db.Allocation_Systems.FirstOrDefaultAsync(a => a.Game_Id == gameId && a.System_Id == systemId && a.User_Id == userId);
+                if (existingAllocation != null)
+                {
+                    throw new InvalidOperationException("An allocation system for this game and system already exists.");
+                }
+
+                var allocationSystem = new Allocation_Systems
+                {
+                    Game_Id = gameId,
+                    System_Id = systemId,
+                    User_Id = userId
+                };
+
+                await _db.Allocation_Systems.AddAsync(allocationSystem);
+                await _db.SaveChangesAsync();
+                return allocationSystem;
+            }
+            else
+            {
+                throw new InvalidOperationException("does not exist");
             }
 
-            var allocation = new Allocation_Achievements
-            {
-                Users_Id = userId,
-                Achievement_Id = achievementId
-            };
-
-            await _db.Allocation_Achievements.AddAsync(allocation);
-            await _db.SaveChangesAsync();
-
-            return allocation;
         }
 
-        public async Task<Allocation_Achievements?> DeleteAllocation(int userId, int achievementId)
+        public async Task<Allocation_Systems?> DeleteAllocationSystem(int? gameId = -1, int systemId = -1, int userId = -1)
         {
-            var allocation = await _db.Allocation_Achievements
-                .SingleOrDefaultAsync(a => a.Users_Id == userId && a.Achievement_Id == achievementId);
+            var allocationSystem = await _db.Allocation_Systems.FirstOrDefaultAsync(a => a.Game_Id == gameId && a.System_Id == systemId && a.User_Id == userId);
 
-            if (allocation != null)
+            if (allocationSystem != null)
             {
-                _db.Allocation_Achievements.Remove(allocation);
+                _db.Allocation_Systems.Remove(allocationSystem);
                 await _db.SaveChangesAsync();
             }
 
-            return allocation;
+            return allocationSystem;
         }
     }
 }

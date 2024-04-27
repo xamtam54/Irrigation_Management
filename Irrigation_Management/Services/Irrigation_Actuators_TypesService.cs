@@ -8,14 +8,14 @@ namespace Irrigation_Management.Services
         Task<List<Irrigation_Actuators_Types>> GetAll();
         Task<Irrigation_Actuators_Types?> GetIrrigationActuatorType(int Irrigation_Actuators_Type_Id);
         Task<Irrigation_Actuators_Types> CreateIrrigationActuatorType(string Type_Name, string Description);
-        Task<Irrigation_Actuators_Types?> UpdateIrrigationActuatorType(int Irrigation_Actuators_Type_Id, string Type_Name, string Description);
+        Task<Irrigation_Actuators_Types?> UpdateIrrigationActuatorType(int Irrigation_Actuators_Type_Id, string? Type_Name, string? Description);
         Task<Irrigation_Actuators_Types?> DeleteIrrigationActuatorType(int Irrigation_Actuators_Type_Id);
     }
 
     public class IrrigationActuatorsTypesService : IIrrigationActuatorsTypesService
     {
         private readonly IIrrigationActuatorsTypesRepository _irrigationActuatorsTypesRepository;
-        public IrrigationActuatorsTypesService(IrrigationActuatorsTypesRepository irrigationActuatorsTypesRepository)
+        public IrrigationActuatorsTypesService(IIrrigationActuatorsTypesRepository irrigationActuatorsTypesRepository)
         {
             _irrigationActuatorsTypesRepository = irrigationActuatorsTypesRepository;
         }
@@ -27,7 +27,16 @@ namespace Irrigation_Management.Services
 
         public async Task<Irrigation_Actuators_Types?> DeleteIrrigationActuatorType(int Irrigation_Actuators_Type_Id)
         {
-            return await _irrigationActuatorsTypesRepository.DeleteIrrigationActuatorType(Irrigation_Actuators_Type_Id);
+            Irrigation_Actuators_Types? type = await _irrigationActuatorsTypesRepository.GetIrrigationActuatorType(Irrigation_Actuators_Type_Id);
+
+            if (type != null)
+            {
+                type.IsDeleted = true;
+                // type.Date = DateTime.Now;
+                return await _irrigationActuatorsTypesRepository.DeleteIrrigationActuatorType(type);
+            }
+
+            return null;
         }
 
         public async Task<List<Irrigation_Actuators_Types>> GetAll()
@@ -40,7 +49,7 @@ namespace Irrigation_Management.Services
             return await _irrigationActuatorsTypesRepository.GetIrrigationActuatorType(Irrigation_Actuators_Type_Id);
         }
 
-        public async Task<Irrigation_Actuators_Types?> UpdateIrrigationActuatorType(int Irrigation_Actuators_Type_Id, string Type_Name = null, string Description = null)
+        public async Task<Irrigation_Actuators_Types?> UpdateIrrigationActuatorType(int Irrigation_Actuators_Type_Id, string? Type_Name = null, string? Description = null)
         {
             Irrigation_Actuators_Types? typeToUpdate = await _irrigationActuatorsTypesRepository.GetIrrigationActuatorType(Irrigation_Actuators_Type_Id);
 

@@ -11,7 +11,7 @@ namespace Irrigation_Management.Repository
         Task<Planting_Areas?> GetPlanting_Area(int Area_Id);
         Task<Planting_Areas> CreatePlanting_Areas(int Crop_Status_Id, int Plant_Id);
         Task<Planting_Areas?> UpdatePlanting_Areas(int Area_Id, int Crop_Status_Id, int Plant_Id);
-        Task<Planting_Areas?> DeletePlanting_Areas(int Area_Id);
+        Task<Planting_Areas?> DeletePlanting_Areas(Planting_Areas areaToDelete);
     }
     public class Planting_AreasRepository : IPlanting_AreasRepository
     {
@@ -34,17 +34,15 @@ namespace Irrigation_Management.Repository
             return newArea;
         }
 
-        public async Task<Planting_Areas?> DeletePlanting_Areas(int Area_Id)
+        public async Task<Planting_Areas?> DeletePlanting_Areas(Planting_Areas areaToDelete)
         {
-            Planting_Areas? planting_AreaToDelete = await GetPlanting_Area(Area_Id);
-
-            if (planting_AreaToDelete != null)
+            if (areaToDelete != null)
             {
-                _db.Planting_Areas.Remove(planting_AreaToDelete);
+                areaToDelete.IsDeleted = true;
                 await _db.SaveChangesAsync();
             }
 
-            return planting_AreaToDelete;
+            return areaToDelete;
         }
 
         public async Task<Planting_Areas?> GetPlanting_Area(int Area_Id)

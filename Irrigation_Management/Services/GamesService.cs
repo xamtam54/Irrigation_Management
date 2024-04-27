@@ -7,32 +7,40 @@ namespace Irrigation_Management.Services
     {
         Task<List<Games>> GetAll();
         Task<Games?> GetGame(int gameId);
-        Task<Games> CreateGame(int userId, int scoreId, int? stage = null, decimal? endScore = null);
+        Task<Games> CreateGame(int Achievement_Id, int scoreId, int? stage = null, decimal? endScore = null);
         Task<Games?> UpdateGame(int gameId, int? stage = null, decimal? endScore = null);
         Task<Games?> DeleteGame(int gameId);
         //----------------------------------------------------------
-        Task<Allocation_Systems> CreateAllocationSystem(int gameId, int systemId);
-        Task<Allocation_Systems?> DeleteAllocationSystem(int gameId, int systemId);
     }
 
     public class GamesService : IGamesService
     {
         private readonly IGamesRepository _gamesRepository;
 
-        public GamesService(GamesRepository gamesRepository)
+        public GamesService(IGamesRepository gamesRepository)
         {
             _gamesRepository = gamesRepository;
         }
 
-        public async Task<Games> CreateGame(int userId, int scoreId, int? stage = null, decimal? endScore = null)
+        public async Task<Games> CreateGame(int Achievement_Id, int scoreId, int? stage = null, decimal? endScore = null)
         {
-            return await _gamesRepository.CreateGame(userId, scoreId, stage, endScore);
+            return await _gamesRepository.CreateGame(Achievement_Id, scoreId, stage, endScore);
         }
 
         public async Task<Games?> DeleteGame(int gameId)
         {
-            return await _gamesRepository.DeleteGame(gameId);
+            Games? game = await _gamesRepository.GetGame(gameId);
+
+            if (game != null)
+            {
+                game.IsDeleted = true;
+                // game.Date = DateTime.Now;
+                return await _gamesRepository.DeleteGame(game);
+            }
+
+            return null;
         }
+
 
         public async Task<List<Games>> GetAll()
         {
@@ -60,14 +68,6 @@ namespace Irrigation_Management.Services
         }
 
         //------------------------------------------------------------------------------------------
-        public async Task<Allocation_Systems> CreateAllocationSystem(int gameId, int systemId)
-        {
-            return await _gamesRepository.CreateAllocationSystem(gameId, systemId);
-        }
-
-        public async Task<Allocation_Systems?> DeleteAllocationSystem(int gameId, int systemId)
-        {
-            return await _gamesRepository.DeleteAllocationSystem(gameId, systemId);
-        }
+        
     }
 }

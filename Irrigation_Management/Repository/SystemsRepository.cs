@@ -11,7 +11,7 @@ namespace Irrigation_Management.Repository
         Task<Systems?> GetSystem(int System_Id);
         Task<Systems> CreateSystem(string Systems_Name);
         Task<Systems?> UpdateSystem(int System_Id, string Systems_Name);
-        Task<Systems?> DeleteSystem(int System_Id);
+        Task<Systems?> DeleteSystem(Systems systemToDelete);
     }
     public class SystemsRepository : ISystemsRepository
     {
@@ -32,13 +32,11 @@ namespace Irrigation_Management.Repository
             return newSystem;
         }
 
-        public async Task<Systems?> DeleteSystem(int System_Id)
+        public async Task<Systems?> DeleteSystem(Systems systemToDelete)
         {
-            Systems? systemToDelete = await GetSystem(System_Id);
-
             if (systemToDelete != null)
             {
-                _db.Systems.Remove(systemToDelete);
+                systemToDelete.IsDeleted = true;
                 await _db.SaveChangesAsync();
             }
 

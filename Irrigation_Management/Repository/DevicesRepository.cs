@@ -11,7 +11,7 @@ namespace Irrigation_Management.Repository
         Task<Devices?> GetDevice(int Device_Id);
         Task<Devices> CreateDevice(string Device_Name, decimal Device_Price, int Device_Enabled, int System_Id, int? Area_Id);
         Task<Devices?> UpdateDevice(int Device_Id, string Device_Name, decimal Device_Price, int Device_Enabled, int System_Id, int? Area_Id);
-        Task<Devices?> DeleteDevice(int Device_Id);
+        Task<Devices?> DeleteDevice(Devices deviceToDelete);
     }
     public class DevicesRepository : IDevicesRepository
     {
@@ -37,13 +37,11 @@ namespace Irrigation_Management.Repository
             return newDevice;
         }
 
-        public async Task<Devices?> DeleteDevice(int Device_Id)
+        public async Task<Devices?> DeleteDevice(Devices deviceToDelete)
         {
-            Devices? deviceToDelete = await GetDevice(Device_Id);
-
             if (deviceToDelete != null)
             {
-                _db.Devices.Remove(deviceToDelete);
+                deviceToDelete.IsDeleted = true; 
                 await _db.SaveChangesAsync();
             }
 

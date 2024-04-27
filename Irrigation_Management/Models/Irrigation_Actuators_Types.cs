@@ -11,6 +11,7 @@ namespace Irrigation_Management.Models
         public required string Type_Name { get; set; }
         [StringLength(150)]
         public required string Description { get; set; }
-
+        //-------------------------------------------------------------------------------------
+        public bool IsDeleted { get; internal set; } = false;
     }
 }

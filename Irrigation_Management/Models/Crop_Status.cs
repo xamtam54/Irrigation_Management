@@ -12,5 +12,7 @@ namespace Irrigation_Management.Models
         public required string Crop_Status_Name { get; set; }
         [Column(TypeName = "decimal(5,2)")]
         public required decimal Production_Percentage { get; set; }
+        //-------------------------------------------------------------------------------------
+        public bool IsDeleted { get; internal set; } = false;
     }
 }

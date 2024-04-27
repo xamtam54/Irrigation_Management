@@ -11,7 +11,7 @@ namespace Irrigation_Management.Repository
         Task<User_Types?> GetUserType(int User_Type_Id);
         Task<User_Types> CreateUserType(string User_Type_Name);
         Task<User_Types?> UpdateUserType(int User_Type_Id, string User_Type_Name);
-        Task<User_Types?> DeleteUserType(int User_Type_Id);
+        Task<User_Types?> DeleteUserType(User_Types userTypeToDelete);
     }
     public class User_TypesRepository : IUser_TypesRepository
     {
@@ -32,13 +32,11 @@ namespace Irrigation_Management.Repository
             return newUserType;
         }
 
-        public async Task<User_Types?> DeleteUserType(int User_Type_Id)
+        public async Task<User_Types?> DeleteUserType(User_Types userTypeToDelete)
         {
-            User_Types? userTypeToDelete = await GetUserType(User_Type_Id);
-
             if (userTypeToDelete != null)
             {
-                _db.User_Types.Remove(userTypeToDelete);
+                userTypeToDelete.IsDeleted = true;
                 await _db.SaveChangesAsync();
             }
 

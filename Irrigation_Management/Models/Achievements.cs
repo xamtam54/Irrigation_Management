@@ -13,6 +13,8 @@ namespace Irrigation_Management.Models
         //--------------------------------------------------------------------
         [Range(0, 1, ErrorMessage = "El valor debe estar entre 0 y 1")]
         public int Achievement_Status { get; set; } = 0;
+        //-------------------------------------------------------------------------------------
+        public bool IsDeleted { get; internal set; } = false;
 
     }
 }

@@ -9,5 +9,7 @@ namespace Irrigation_Management.Models
         //-------------------------------------------------------------------------------------
         [StringLength(50)]
         public required string User_Type_Name { get; set;}
+        //-------------------------------------------------------------------------------------
+        public bool IsDeleted { get; internal set; } = false;
     }
 }

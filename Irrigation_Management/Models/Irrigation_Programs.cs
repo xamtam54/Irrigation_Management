@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Irrigation_Management.Models
 {
@@ -13,7 +14,11 @@ namespace Irrigation_Management.Models
         [Range(1, 7, ErrorMessage = "El valor debe estar entre 1 y 7")]
         public int Irrigations_Per_Week { get; set; } = 1;
         //-------------------------------------------------------------------------------------
+        [ForeignKey("Planting_Area")]
+
         public required int Area_Id { get; set; }
-        public Planting_Areas? Planting_Areas { get; set; }
+        public Planting_Areas? Planting_Area { get; set; }
+        //-------------------------------------------------------------------------------------
+        public bool IsDeleted { get; internal set; } = false;
     }
 }

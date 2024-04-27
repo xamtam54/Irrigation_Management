@@ -10,7 +10,7 @@ namespace Irrigation_Management.Repository
         Task<Water_Management_Types?> GetWaterManagementType(int Water_Management_Type_Id);
         Task<Water_Management_Types> CreateWaterManagementType(string Type_Name, string Description, string Material);
         Task<Water_Management_Types?> UpdateWaterManagementType(int Water_Management_Type_Id, string Type_Name, string Description, string Material);
-        Task<Water_Management_Types?> DeleteWaterManagementType(int Water_Management_Type_Id);
+        Task<Water_Management_Types?> DeleteWaterManagementType(Water_Management_Types typeToDelete);
     }
 
     public class WaterManagementTypesRepository : IWaterManagementTypesRepository
@@ -61,13 +61,11 @@ namespace Irrigation_Management.Repository
             return typeToUpdate;
         }
 
-        public async Task<Water_Management_Types?> DeleteWaterManagementType(int Water_Management_Type_Id)
+        public async Task<Water_Management_Types?> DeleteWaterManagementType(Water_Management_Types typeToDelete)
         {
-            Water_Management_Types? typeToDelete = await GetWaterManagementType(Water_Management_Type_Id);
-
             if (typeToDelete != null)
             {
-                _db.Water_Management_Types.Remove(typeToDelete);
+                typeToDelete.IsDeleted = true;
                 await _db.SaveChangesAsync();
             }
 

@@ -16,7 +16,7 @@ namespace Irrigation_Management.Services
     {
         private readonly IScoreRepository _scoreRepository;
 
-        public ScoreService(ScoreRepository scoreRepository)
+        public ScoreService(IScoreRepository scoreRepository)
         {
             _scoreRepository = scoreRepository;
         }
@@ -28,7 +28,16 @@ namespace Irrigation_Management.Services
 
         public async Task<Score?> DeleteScore(int scoreId)
         {
-            return await _scoreRepository.DeleteScore(scoreId);
+            Score? score = await _scoreRepository.GetScore(scoreId);
+
+            if (score != null)
+            {
+                score.IsDeleted = true;
+                // score.Date = DateTime.Now;
+                return await _scoreRepository.DeleteScore(score);
+            }
+
+            return null;
         }
 
         public async Task<List<Score>> GetAll()

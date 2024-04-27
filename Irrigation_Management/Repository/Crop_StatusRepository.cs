@@ -10,7 +10,7 @@ namespace Irrigation_Management.Repository
         Task<Crop_Status?> GetCropStatus(int Crop_Status_Id);
         Task<Crop_Status> CreateCropStatus(string Crop_Status_Name, decimal Production_Percentage);
         Task<Crop_Status?> UpdateCropStatus(int Crop_Status_Id, string Crop_Status_Name, decimal Production_Percentage);
-        Task<Crop_Status?> DeleteCropStatus(int Crop_Status_Id);
+        Task<Crop_Status?> DeleteCropStatus(Crop_Status cropStatusToDelete);
     }
 
     public class CropStatusRepository : ICropStatusRepository
@@ -60,17 +60,16 @@ namespace Irrigation_Management.Repository
             return cropStatusToUpdate;
         }
 
-        public async Task<Crop_Status?> DeleteCropStatus(int Crop_Status_Id)
+        public async Task<Crop_Status?> DeleteCropStatus(Crop_Status cropStatusToDelete)
         {
-            Crop_Status? cropStatusToDelete = await GetCropStatus(Crop_Status_Id);
-
             if (cropStatusToDelete != null)
             {
-                _db.Crop_Status.Remove(cropStatusToDelete);
+                cropStatusToDelete.IsDeleted = true;
                 await _db.SaveChangesAsync();
             }
 
             return cropStatusToDelete;
         }
+
     }
 }

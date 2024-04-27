@@ -27,7 +27,16 @@ namespace Irrigation_Management.Services
 
         public async Task<Sensor_Types?> DeleteSensorType(int Sensor_Type_Id)
         {
-            return await _sensorTypesRepository.DeleteSensorType(Sensor_Type_Id);
+            Sensor_Types? type = await _sensorTypesRepository.GetSensorType(Sensor_Type_Id);
+
+            if (type != null)
+            {
+                type.IsDeleted = true;
+                // type.Date = DateTime.Now;
+                return await _sensorTypesRepository.DeleteSensorType(type);
+            }
+
+            return null;
         }
 
         public async Task<List<Sensor_Types>> GetAll()

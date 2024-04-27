@@ -27,8 +27,18 @@ namespace Irrigation_Management.Services
 
         public async Task<Sensor_Data?> DeleteSensorData(int Sensor_Data_Id)
         {
-            return await _sensorDataRepository.DeleteSensorData(Sensor_Data_Id);
+            Sensor_Data? data = await _sensorDataRepository.GetSensorData(Sensor_Data_Id);
+
+            if (data != null)
+            {
+                data.IsDeleted = true;
+                // data.Date = DateTime.Now;
+                return await _sensorDataRepository.DeleteSensorData(data);
+            }
+
+            return null;
         }
+
 
         public async Task<List<Sensor_Data>> GetAll()
         {
