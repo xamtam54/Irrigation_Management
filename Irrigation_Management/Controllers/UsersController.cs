@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Irrigation_Management.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/")]
     [ApiController]
     public class UsersController : ControllerBase
     {
