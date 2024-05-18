@@ -17,6 +17,7 @@ namespace Irrigation_Management.Repository
         //----------------------------------------------------------
         Task<Allocation_Systems> CreateAllocationSystem(int? gameId = -1, int systemId = -1, int userId = -1);
         Task<Allocation_Systems?> DeleteAllocationSystem(int? gameId = -1, int systemId = -1, int userId = -1);
+        Task<List<Allocation_Systems>> GetAllocationsByUserId(int userId);
     }
     public class UsersRepository : IUsersRepository
     {
@@ -27,7 +28,7 @@ namespace Irrigation_Management.Repository
         }
         public async Task<List<Users>> GetAll()
         {
-            return await _db.Users.ToListAsync();
+            return await _db.Users.Where(u => u.IsDeleted == false).ToListAsync();
         }
 
         public async Task<Users?> GetUser(int User_Id)
@@ -48,10 +49,13 @@ namespace Irrigation_Management.Repository
             };
 
             await _db.Users.AddAsync(newUser);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
+
+            // Llamar al procedimiento almacenado CreateUserProcedure después de guardar los cambios en la base de datos
+            await _db.Database.ExecuteSqlInterpolatedAsync($"EXEC CreateUserProcedure {UserName}, {Names}, {Surnames}, {Password}, {Email}, {User_Type_Id}");
+
             return newUser;
         }
-
         public async Task<Users?> UpdateUser(int Users_Id, string UserName, string Names, string Surnames, string Password, string Email, int Is_Active, int User_Type_Id)
         {
             Users? userToUpdate = await GetUser(Users_Id);
@@ -131,6 +135,17 @@ namespace Irrigation_Management.Repository
             }
 
             return allocationSystem;
+        }
+
+        public async Task<List<Allocation_Systems>> GetAllocationsByUserId(int userId)
+        {
+            var allocations = await _db.Allocation_Systems
+                .Where(a => a.User_Id == userId)
+                .ToListAsync();
+
+            return allocations;
+
+            //return await _db.Allocation_Systems.ToListAsync();
         }
     }
 }

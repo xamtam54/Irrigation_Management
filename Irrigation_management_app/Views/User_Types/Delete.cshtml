@@ -1,0 +1,25 @@
+﻿@model Irrigation_management_app.Models.User_TypesVModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+@if (Model != null)
+{
+    <h2>Delete Confirmed</h2>
+    <p>The following type of user has been successfully deleted:</p>
+    <div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.User_Type_Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.User_Type_Name)
+            </dd>
+        </dl>
+    </div>
+}
+
+<form>
+    <a asp-action="Index" class="btn btn-secondary">Go back</a>
+</form>

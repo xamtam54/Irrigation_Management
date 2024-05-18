@@ -1,0 +1,49 @@
+﻿@model Irrigation_management_app.Models.DevicesVModel
+
+@{
+    ViewData["Title"] = "Edit Device";
+}
+
+<h1>Edit Device</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Device_Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Device_Name" class="control-label">Device Name</label>
+                <input asp-for="Device_Name" class="form-control" />
+                <span asp-validation-for="Device_Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Device_Price" class="control-label">Device Price</label>
+                <input asp-for="Device_Price" class="form-control" />
+                <span asp-validation-for="Device_Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Device_Enabled" class="control-label">Device Enabled</label>
+                <input asp-for="Device_Enabled" class="form-control" />
+                <span asp-validation-for="Device_Enabled" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="System_Id" class="control-label">System</label>
+                <select asp-for="System_Id" class="form-control" asp-items="@(new SelectList(ViewBag.Systems, "System_Id", "Systems_Name", Model.System_Id))">
+                    <option value="">-- Select System --</option>
+                </select>
+                <span asp-validation-for="System_Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Area_Id" class="control-label">Planting Area</label>
+                <select asp-for="Area_Id" class="form-control" asp-items="@(new SelectList(ViewBag.PlantingAreas, "Area_Id", "Area_Name", Model.Area_Id))">
+                    <option value="">-- Select Planting Area --</option>
+                </select>
+                <span asp-validation-for="Area_Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a asp-action="Index" class="btn btn-secondary">Go back</a>
+            </div>
+        </form>
+    </div>
+</div>

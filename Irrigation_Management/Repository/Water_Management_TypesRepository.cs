@@ -23,7 +23,7 @@ namespace Irrigation_Management.Repository
 
         public async Task<List<Water_Management_Types>> GetAll()
         {
-            return await _db.Water_Management_Types.ToListAsync();
+            return await _db.Water_Management_Types.Where(u => u.IsDeleted == false).ToListAsync();
         }
 
         public async Task<Water_Management_Types?> GetWaterManagementType(int Water_Management_Type_Id)

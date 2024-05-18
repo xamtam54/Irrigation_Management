@@ -1,0 +1,29 @@
+﻿@model Irrigation_management_app.Models.SensorsVModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Sensor_Type_Id" class="control-label">Tipo de Sensor</label>
+                <select asp-for="Sensor_Type_Id" class="form-control" asp-items="ViewBag.SensorTypes"></select>
+                <span asp-validation-for="Sensor_Type_Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Device_Id" class="control-label">Dispositivo</label>
+                <select asp-for="Device_Id" class="form-control" asp-items="ViewBag.Devices"></select>
+                <span asp-validation-for="Device_Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Crear</button>
+                <a asp-action="Index" class="btn btn-secondary">Regresar</a>
+            </div>
+        </form>
+    </div>
+</div>

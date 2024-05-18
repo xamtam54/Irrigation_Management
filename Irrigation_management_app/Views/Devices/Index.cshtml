@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Irrigation_management_app.Models.DevicesVModel>
+
+@{
+    ViewData["Title"] = "Devices";
+}
+
+<h1>Devices</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="Index" asp-controller="Water_Management" class="btn btn-primary">Water Management</a>
+    <a asp-action="Index" asp-controller="Sensors" class="btn btn-primary">Sensors</a>
+    <a asp-action="Index" asp-controller="Irrigation_Actuators" class="btn btn-primary">Irrigation Actuators</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Device Id
+            </th>
+            <th>
+                Device Name
+            </th>
+            <th>
+                Device Price
+            </th>
+            <th>
+                Device Enabled
+            </th>
+            <th>
+                System
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Device_Id
+                </td>
+                <td>
+                    @item.Device_Name
+                </td>
+                <td>
+                    @item.Device_Price
+                </td>
+                <td>
+                    @item.Device_Enabled
+                </td>
+                <td>
+                    @item.System_Id
+
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Device_Id" class="btn btn-primary">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Device_Id" class="btn btn-danger">Delete</a>
+                </td>
+               
+            </tr>
+        }
+    </tbody>
+</table>

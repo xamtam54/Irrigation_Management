@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Irrigation_management_app.Models.UsersVModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1>Users</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">User Id</th>
+            <th scope="col">User Name</th>
+            <th scope="col">Names</th>
+            <th scope="col">Surnames</th>
+            <th scope="col">Email</th>
+            <th scope="col">Registration Date</th>
+            <th scope="col">Is Active</th>
+            <th scope="col">User Type Id</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Users_Id</td>
+                <td>@item.UserName</td>
+                <td>@item.Names</td>
+                <td>@item.Surnames</td>
+                <td>@item.Email</td>
+                <td>@item.Registration_Date.ToShortDateString()</td>
+                <td>@(item.Is_Active == 1 ? "Yes" : "No")</td>
+                <td>@item.User_Type_Id</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Users_Id" class="btn btn-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Users_Id" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

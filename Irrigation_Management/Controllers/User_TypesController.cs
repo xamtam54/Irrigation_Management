@@ -36,7 +36,7 @@ namespace Irrigation_Management.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<User_Types>> UpdateUserType(int id, string User_Type_Name)
+        public async Task<ActionResult<User_Types>> UpdateUserType(int id, [FromBody] User_Types model)
         {
             var user = await _user_TypesService.GetUserType(id);
             if (user == null)
@@ -44,7 +44,7 @@ namespace Irrigation_Management.Controllers
                 return BadRequest("User_Types not found");
             }
 
-            return Ok(await _user_TypesService.UpdateUserType(id, User_Type_Name));
+            return Ok(await _user_TypesService.UpdateUserType(id, model.User_Type_Name));
         }
 
         [HttpDelete("{id}")]
@@ -59,10 +59,15 @@ namespace Irrigation_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User_Types>> CreateUserType(string User_Type_Name)
+        public async Task<ActionResult<User_Types>> CreateUserType([FromBody] User_Types model)
         {
-            return await _user_TypesService.CreateUserType(User_Type_Name);
-        }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            return await _user_TypesService.CreateUserType(model.User_Type_Name);
+        }
+        
     }
 }

@@ -1,0 +1,37 @@
+﻿@model Irrigation_management_app.Models.Irrigation_ActuatorsVModel
+
+@{
+    ViewData["Title"] = "Delete Confirmed";
+}
+
+@if (Model != null)
+{
+    <h2>Delete Confirmed</h2>
+    <p>The following irrigation actuator has been successfully deleted:</p>
+    <div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Irrigation_Actuator_Id)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Irrigation_Actuator_Id)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Device.Device_Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Device.Device_Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Irrigation_Actuators_Type.Type_Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Irrigation_Actuators_Type.Type_Name)
+            </dd>
+        </dl>
+    </div>
+}
+
+<form asp-action="Index">
+    <button type="submit" class="btn btn-secondary">Go back</button>
+</form>

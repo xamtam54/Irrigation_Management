@@ -36,22 +36,22 @@ namespace Irrigation_Management.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Sensor_Data>> UpdateSensorData(int id, DateTime Date_Time, float Data, int Sensor_Id)
+        public async Task<ActionResult<Sensor_Data>> UpdateSensorData(int id, [FromBody] Sensor_Data model)
         {
-            var user = await _sensorDataService.GetSensorData(id);
-            if (user == null)
+            var sensorData = await _sensorDataService.GetSensorData(id);
+            if (sensorData == null)
             {
                 return BadRequest("Sensor_Data not found");
             }
 
-            return Ok(await _sensorDataService.UpdateSensorData(id, Date_Time, Data, Sensor_Id));
+            return Ok(await _sensorDataService.UpdateSensorData(id, model.Date_Time, model.Data, model.Sensor_Id));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Sensor_Data>> DeleteSensorData(int id)
         {
-            var user = await _sensorDataService.GetSensorData(id);
-            if (user == null)
+            var sensorData = await _sensorDataService.GetSensorData(id);
+            if (sensorData == null)
             {
                 return BadRequest("Sensor_Data not found");
             }
@@ -59,9 +59,15 @@ namespace Irrigation_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Sensor_Data>> CreateSensorData(DateTime Date_Time, float Data, int Sensor_Id)
+        public async Task<ActionResult<Sensor_Data>> CreateSensorData([FromBody] Sensor_Data model)
         {
-            return await _sensorDataService.CreateSensorData(Date_Time, Data, Sensor_Id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _sensorDataService.CreateSensorData(model.Date_Time, model.Data, model.Sensor_Id);
         }
+
     }
 }

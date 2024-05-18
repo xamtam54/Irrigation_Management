@@ -1,0 +1,25 @@
+﻿@model Irrigation_management_app.Models.DevicesVModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+@if (Model != null)
+{
+    <h2>Delete Confirmed</h2>
+    <p>The following device has been successfully deleted:</p>
+    <div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Device_Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Device_Name)
+            </dd>
+        </dl>
+    </div>
+}
+
+<form>
+    <a asp-action="Index" class="btn btn-secondary">Go back</a>
+</form>

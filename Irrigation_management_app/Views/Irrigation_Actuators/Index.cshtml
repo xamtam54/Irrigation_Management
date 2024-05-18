@@ -1,0 +1,33 @@
+﻿@model List<Irrigation_management_app.Models.Irrigation_ActuatorsVModel>
+
+<h2>Actuadores de Riego</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Crear Nuevo</a>
+    <a asp-action="Index" asp-controller="Devices" class="btn btn-primary">go back to devices</a>
+
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre del dispositivo</th>
+            <th>Tipo de actuador de riego</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Irrigation_Actuator_Id</td>
+                <td>@item.Device.Device_Name</td>
+                <td>@item.Irrigation_Actuators_Type.Type_Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Irrigation_Actuator_Id" class="btn btn-primary">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Irrigation_Actuator_Id" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

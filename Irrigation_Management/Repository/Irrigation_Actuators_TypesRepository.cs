@@ -23,7 +23,7 @@ namespace Irrigation_Management.Repository
 
         public async Task<List<Irrigation_Actuators_Types>> GetAll()
         {
-            return await _db.Irrigation_Actuators_Types.ToListAsync();
+            return await _db.Irrigation_Actuators_Types.Where(u => u.IsDeleted == false).ToListAsync();
         }
 
         public async Task<Irrigation_Actuators_Types?> GetIrrigationActuatorType(int Irrigation_Actuators_Type_Id)

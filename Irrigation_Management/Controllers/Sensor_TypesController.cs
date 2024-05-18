@@ -38,22 +38,22 @@ namespace Irrigation_Management.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Sensor_Types>> UpdateSensorType(int id, string Sensor_Type, string Description, string Measure_Unit)
+        public async Task<ActionResult<Sensor_Types>> UpdateSensorType(int id, [FromBody] Sensor_Types model)
         {
-            var user = await _sensorTypesService.GetSensorType(id);
-            if (user == null)
+            var sensorType = await _sensorTypesService.GetSensorType(id);
+            if (sensorType == null)
             {
                 return BadRequest("Sensor_Types not found");
             }
 
-            return Ok(await _sensorTypesService.UpdateSensorType(id, Sensor_Type, Description, Measure_Unit));
+            return Ok(await _sensorTypesService.UpdateSensorType(id, model.Sensor_Type, model.Description, model.Measure_Unit));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Sensor_Types>> DeleteSensorType(int id)
         {
-            var user = await _sensorTypesService.GetSensorType(id);
-            if (user == null)
+            var sensorType = await _sensorTypesService.GetSensorType(id);
+            if (sensorType == null)
             {
                 return BadRequest("Sensor_Types not found");
             }
@@ -61,9 +61,15 @@ namespace Irrigation_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Sensor_Types>> CreateSensorType(string Sensor_Type, string Description, string Measure_Unit)
+        public async Task<ActionResult<Sensor_Types>> CreateSensorType([FromBody] Sensor_Types model)
         {
-            return await _sensorTypesService.CreateSensorType( Sensor_Type, Description, Measure_Unit);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _sensorTypesService.CreateSensorType(model.Sensor_Type, model.Description, model.Measure_Unit);
         }
+
     }
 }

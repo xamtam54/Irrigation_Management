@@ -13,6 +13,8 @@ namespace Irrigation_Management.Services
         //-----------------------------------------------------------------------
         Task<Allocation_Systems> CreateAllocationSystem(int? gameId = -1, int systemId = -1, int userId = -1);
         Task<Allocation_Systems?> DeleteAllocationSystem(int? gameId = -1, int systemId = -1, int userId = -1);
+        Task<List<Allocation_Systems>> GetAllocationsByUserId(int userId);
+
     }
 
     public class UsersService : IUsersService
@@ -83,6 +85,12 @@ namespace Irrigation_Management.Services
         {
             return await _usersRepository.DeleteAllocationSystem(gameId, systemId, userId);
         }
+
+        public async Task<List<Allocation_Systems>> GetAllocationsByUserId(int userId)
+        {
+            return await _usersRepository.GetAllocationsByUserId(userId);
+        }
+
 
     }
 }

@@ -36,22 +36,22 @@ namespace Irrigation_Management.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Sensors>> UpdateSensor(int id, int Sensor_Type_Id, int Device_Id)
+        public async Task<ActionResult<Sensors>> UpdateSensor(int id, [FromBody] Sensors model)
         {
-            var user = await _sensorsService.GetSensor(id);
-            if (user == null)
+            var sensor = await _sensorsService.GetSensor(id);
+            if (sensor == null)
             {
                 return BadRequest("Sensors not found");
             }
 
-            return Ok(await _sensorsService.UpdateSensor(id, Sensor_Type_Id, Device_Id));
+            return Ok(await _sensorsService.UpdateSensor(id, model.Sensor_Type_Id, model.Device_Id));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Sensors>> DeleteSensor(int id)
         {
-            var user = await _sensorsService.GetSensor(id);
-            if (user == null)
+            var sensor = await _sensorsService.GetSensor(id);
+            if (sensor == null)
             {
                 return BadRequest("Sensors not found");
             }
@@ -59,9 +59,15 @@ namespace Irrigation_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Sensors>> CreateSensor(int Sensor_Type_Id, int Device_Id)
+        public async Task<ActionResult<Sensors>> CreateSensor([FromBody] Sensors model)
         {
-            return await _sensorsService.CreateSensor(Sensor_Type_Id, Device_Id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _sensorsService.CreateSensor(model.Sensor_Type_Id, model.Device_Id);
         }
+
     }
 }

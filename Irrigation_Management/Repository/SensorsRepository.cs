@@ -23,7 +23,7 @@ namespace Irrigation_Management.Repository
 
         public async Task<List<Sensors>> GetAll()
         {
-            return await _db.Sensors.ToListAsync();
+            return await _db.Sensors.Where(u => u.IsDeleted == false).ToListAsync();
         }
 
         public async Task<Sensors?> GetSensor(int Sensor_Id)

@@ -36,22 +36,22 @@ namespace Irrigation_Management.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Crop_Status>> UpdateCrop_Status(int id, string Crop_Status_Name, decimal Production_Percentage)
+        public async Task<ActionResult<Crop_Status>> UpdateCrop_Status(int id, [FromBody] Crop_Status model)
         {
-            var user = await _cropStatusService.GetCropStatus(id);
-            if (user == null)
+            var cropStatus = await _cropStatusService.GetCropStatus(id);
+            if (cropStatus == null)
             {
                 return BadRequest("Crop_Status not found");
             }
 
-            return Ok(await _cropStatusService.UpdateCropStatus(id, Crop_Status_Name, Production_Percentage));
+            return Ok(await _cropStatusService.UpdateCropStatus(id, model.Crop_Status_Name, model.Production_Percentage));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Crop_Status>> DeleteCrop_Status(int id)
         {
-            var user = await _cropStatusService.GetCropStatus(id);
-            if (user == null)
+            var cropStatus = await _cropStatusService.GetCropStatus(id);
+            if (cropStatus == null)
             {
                 return BadRequest("Crop_Status not found");
             }
@@ -59,9 +59,14 @@ namespace Irrigation_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Crop_Status>> CreateCrop_Status(string Crop_Status_Name, decimal Production_Percentage)
+        public async Task<ActionResult<Crop_Status>> CreateCrop_Status([FromBody] Crop_Status model)
         {
-            return await _cropStatusService.CreateCropStatus(Crop_Status_Name, Production_Percentage);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _cropStatusService.CreateCropStatus(model.Crop_Status_Name, model.Production_Percentage);
         }
     }
 }

@@ -36,15 +36,9 @@ namespace Irrigation_Management.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Games>> UpdateGame(int id, int? stage = null, decimal? endScore = null)
+        public async Task<ActionResult<Games>> UpdateGameAchievementId(int id, int achievementId)
         {
-            var user = await _gamesService.GetGame(id);
-            if (user == null)
-            {
-                return BadRequest("Game not found");
-            }
-
-            return Ok(await _gamesService.UpdateGame(id, stage , endScore ));
+            return await _gamesService.UpdateGameAchievementId(id, achievementId);
         }
 
         [HttpDelete("{id}")]

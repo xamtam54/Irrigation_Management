@@ -24,7 +24,7 @@ namespace Irrigation_Management.Repository
 
         public async Task<List<Irrigation_Programs>> GetAll()
         {
-            return await _db.Irrigation_Programs.ToListAsync();
+            return await _db.Irrigation_Programs.Where(u => u.IsDeleted == false).ToListAsync();
         }
 
         public async Task<Irrigation_Programs?> GetIrrigationProgram(int Irrigation_Program_Id)

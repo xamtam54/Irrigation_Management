@@ -1,0 +1,16 @@
+﻿@model Irrigation_management_app.Models.Irrigation_ActuatorsVModel
+
+<h2>Crear Nuevo Actuador de Riego</h2>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Device_Id" class="control-label">Dispositivo</label>
+        <select asp-for="Device_Id" class="form-control" asp-items="ViewBag.Devices"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Irrigation_Actuators_Type_Id" class="control-label">Tipo de Actuador</label>
+        <select asp-for="Irrigation_Actuators_Type_Id" class="form-control" asp-items="ViewBag.Types"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Crear</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

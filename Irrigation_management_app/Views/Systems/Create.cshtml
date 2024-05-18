@@ -1,0 +1,18 @@
+﻿@model SystemsVModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create" class="form">
+    <div class="form-group">
+        <label asp-for="Systems_Name" class="control-label"></label>
+        <input asp-for="Systems_Name" class="form-control" />
+        <span asp-validation-for="Systems_Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Create</button>
+    </div>
+</form>

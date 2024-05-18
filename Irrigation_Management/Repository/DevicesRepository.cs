@@ -55,7 +55,7 @@ namespace Irrigation_Management.Repository
 
         public async Task<List<Devices>> GetDevices()
         {
-            return await _db.Devices.ToListAsync();
+            return await _db.Devices.Where(u => u.IsDeleted == false).ToListAsync();
         }
 
         public async Task<Devices?> UpdateDevice(int Device_Id, string Device_Name, decimal Device_Price, int Device_Enabled, int System_Id, int? Area_Id)

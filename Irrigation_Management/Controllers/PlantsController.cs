@@ -36,22 +36,22 @@ namespace Irrigation_Management.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Plants>> UpdatePlants(int id, string Plant_Name, string Specie, float Min_PH, float Max_PH, float Requirement_Liters)
+        public async Task<ActionResult<Plants>> UpdatePlants(int id, [FromBody] Plants model)
         {
-            var user = await _plantsService.GetPlant(id);
-            if (user == null)
+            var plant = await _plantsService.GetPlant(id);
+            if (plant == null)
             {
                 return BadRequest("Plants not found");
             }
 
-            return Ok(await _plantsService.UpdatePlants(id, Plant_Name, Specie, Min_PH, Max_PH, Requirement_Liters));
+            return Ok(await _plantsService.UpdatePlants(id, model.Plant_Name, model.Specie, model.Min_PH, model.Max_PH, model.Requirement_Liters));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Plants>> DeletePlants(int id)
         {
-            var user = await _plantsService.GetPlant(id);
-            if (user == null)
+            var plant = await _plantsService.GetPlant(id);
+            if (plant == null)
             {
                 return BadRequest("Plants not found");
             }
@@ -59,9 +59,15 @@ namespace Irrigation_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Plants>> CreatePlants(string Plant_Name, string Specie, float Min_PH, float Max_PH, float Requirement_Liters)
+        public async Task<ActionResult<Plants>> CreatePlants([FromBody] Plants model)
         {
-            return await _plantsService.CreatePlants(Plant_Name, Specie, Min_PH, Max_PH, Requirement_Liters);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _plantsService.CreatePlants(model.Plant_Name, model.Specie, model.Min_PH, model.Max_PH, model.Requirement_Liters);
         }
+
     }
 }

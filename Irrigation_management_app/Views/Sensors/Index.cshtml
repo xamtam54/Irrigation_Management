@@ -1,0 +1,33 @@
+﻿@model List<Irrigation_management_app.Models.SensorsVModel>
+
+<h2>Sensores</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Crear Nuevo</a>
+    <a asp-action="Index" asp-controller="Devices" class="btn btn-primary">go back to devices</a>
+
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre del dispositivo</th>
+            <th>Tipo de sensor</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Sensor_Id</td>
+                <td>@item.Device.Device_Name</td>
+                <td>@item.Sensor_Type.Sensor_Type</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Sensor_Id" class="btn btn-primary">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Sensor_Id" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

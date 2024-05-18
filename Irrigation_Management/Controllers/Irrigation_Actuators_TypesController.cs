@@ -34,24 +34,23 @@ namespace Irrigation_Management.Controllers
             return Ok(user);
         }
 
-
         [HttpPut("{id}")]
-        public async Task<ActionResult<Irrigation_Actuators_Types>> UpdateIrrigationActuatorType(int id, string Type_Name, string Description)
+        public async Task<ActionResult<Irrigation_Actuators_Types>> UpdateIrrigationActuatorType(int id, [FromBody] Irrigation_Actuators_Types model)
         {
-            var user = await _irrigationActuatorsTypesService.GetIrrigationActuatorType(id);
-            if (user == null)
+            var irrigationActuatorType = await _irrigationActuatorsTypesService.GetIrrigationActuatorType(id);
+            if (irrigationActuatorType == null)
             {
                 return BadRequest("Irrigation_Actuators_Types not found");
             }
 
-            return Ok(await _irrigationActuatorsTypesService.UpdateIrrigationActuatorType(id, Type_Name, Description));
+            return Ok(await _irrigationActuatorsTypesService.UpdateIrrigationActuatorType(id, model.Type_Name, model.Description));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Irrigation_Actuators_Types>> DeleteIrrigationActuatorType(int id)
         {
-            var user = await _irrigationActuatorsTypesService.GetIrrigationActuatorType(id);
-            if (user == null)
+            var irrigationActuatorType = await _irrigationActuatorsTypesService.GetIrrigationActuatorType(id);
+            if (irrigationActuatorType == null)
             {
                 return BadRequest("Irrigation_Actuators_Types not found");
             }
@@ -59,9 +58,15 @@ namespace Irrigation_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Irrigation_Actuators_Types>> CreateIrrigationActuatorType(string Type_Name, string Description)
+        public async Task<ActionResult<Irrigation_Actuators_Types>> CreateIrrigationActuatorType([FromBody] Irrigation_Actuators_Types model)
         {
-            return await _irrigationActuatorsTypesService.CreateIrrigationActuatorType(Type_Name, Description);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _irrigationActuatorsTypesService.CreateIrrigationActuatorType(model.Type_Name, model.Description);
         }
+
     }
 }

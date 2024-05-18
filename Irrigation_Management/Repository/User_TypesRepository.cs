@@ -45,7 +45,7 @@ namespace Irrigation_Management.Repository
 
         public async Task<List<User_Types>> GetAll()
         {
-            return await _db.User_Types.ToListAsync();
+            return await _db.User_Types.Where(u => u.IsDeleted == false).ToListAsync();
         }
 
         public async Task<User_Types?> GetUserType(int User_Type_Id)

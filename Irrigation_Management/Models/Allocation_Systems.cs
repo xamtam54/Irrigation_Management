@@ -14,7 +14,7 @@ namespace Irrigation_Management.Models
         public Games? Game { get; set; }
 
         [ForeignKey("System")]
-        public int System_Id { get; set; }
+        public int? System_Id { get; set; }
         public Systems? System { get; set; }
 
         [ForeignKey("User")]

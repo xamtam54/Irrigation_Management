@@ -1,0 +1,32 @@
+﻿@model Irrigation_management_app.Models.SensorsVModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete Confirmed</h2>
+<p>The following sensor has been successfully deleted:</p>
+<div>
+    <h4>Sensor Details</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Device.Device_Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Device.Device_Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Sensor_Type.Sensor_Type)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sensor_Type.Sensor_Type)
+        </dd>
+    </dl>
+</div>
+
+<form asp-action="DeleteConfirmed" asp-route-id="@Model.Sensor_Id" method="post">
+    <div class="form-group">
+        <a asp-action="Index" class="btn btn-secondary">Go back</a>
+    </div>
+</form>

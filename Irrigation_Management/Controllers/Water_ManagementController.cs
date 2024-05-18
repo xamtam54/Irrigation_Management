@@ -36,22 +36,22 @@ namespace Irrigation_Management.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Water_Management>> UpdateWaterManagement(int id, float Capacity, float? Collection_Hour, int Device_Id, int Water_Management_Type_Id)
+        public async Task<ActionResult<Water_Management>> UpdateWaterManagement(int id, [FromBody] Water_Management model)
         {
-            var user = await _waterManagementService.GetWaterManagement(id);
-            if (user == null)
+            var waterManagement = await _waterManagementService.GetWaterManagement(id);
+            if (waterManagement == null)
             {
                 return BadRequest("Water_Management not found");
             }
 
-            return Ok(await _waterManagementService.UpdateWaterManagement(id, Capacity, Collection_Hour, Device_Id, Water_Management_Type_Id));
+            return Ok(await _waterManagementService.UpdateWaterManagement(id, model.Capacity, model.Collection_Hour, model.Device_Id, model.Water_Management_Type_Id));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Water_Management>> DeleteWaterManagement(int id)
         {
-            var user = await _waterManagementService.GetWaterManagement(id);
-            if (user == null)
+            var waterManagement = await _waterManagementService.GetWaterManagement(id);
+            if (waterManagement == null)
             {
                 return BadRequest("Water_Management not found");
             }
@@ -59,9 +59,15 @@ namespace Irrigation_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Water_Management>> CreateWaterManagement(float Capacity, float Collection_Hour, int Device_Id, int Water_Management_Type_Id)
+        public async Task<ActionResult<Water_Management>> CreateWaterManagement([FromBody] Water_Management model)
         {
-            return await _waterManagementService.CreateWaterManagement(Capacity, Collection_Hour, Device_Id, Water_Management_Type_Id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _waterManagementService.CreateWaterManagement(model.Capacity, (float)model.Collection_Hour, model.Device_Id, model.Water_Management_Type_Id);
         }
+
     }
 }

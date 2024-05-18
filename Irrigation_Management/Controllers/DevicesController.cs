@@ -34,34 +34,39 @@ namespace Irrigation_Management.Controllers
             return Ok(user);
         }
 
-
         [HttpPut("{id}")]
-        public async Task<ActionResult<Devices>> UpdateDevice(int id, string Device_Name, decimal Device_Price, int Device_Enabled, int System_Id, int? Area_Id)
+        public async Task<ActionResult<Devices>> UpdateDevice(int id, [FromBody] Devices model)
         {
-            var user = await _devicesService.GetDevice(id);
-            if (user == null)
+            var device = await _devicesService.GetDevice(id);
+            if (device == null)
             {
-                return BadRequest("Devices not found");
+                return BadRequest("Device not found");
             }
 
-            return Ok(await _devicesService.UpdateDevice(id, Device_Name, Device_Price, Device_Enabled, System_Id, Area_Id));
+            return Ok(await _devicesService.UpdateDevice(id, model.Device_Name, model.Device_Price, model.Device_Enabled, model.System_Id, model.Area_Id));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Devices>> DeleteDevice(int id)
         {
-            var user = await _devicesService.GetDevice(id);
-            if (user == null)
+            var device = await _devicesService.GetDevice(id);
+            if (device == null)
             {
-                return BadRequest("Devices not found");
+                return BadRequest("Device not found");
             }
             return Ok(await _devicesService.DeleteDevice(id));
         }
 
         [HttpPost]
-        public async Task<ActionResult<Devices>> CreateDevice(string Device_Name, decimal Device_Price, int Device_Enabled, int System_Id, int? Area_Id)
+        public async Task<ActionResult<Devices>> CreateDevice([FromBody] Devices model)
         {
-            return await _devicesService.CreateDevice( Device_Name, Device_Price, Device_Enabled, System_Id, Area_Id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _devicesService.CreateDevice(model.Device_Name, model.Device_Price, model.Device_Enabled, model.System_Id, model.Area_Id);
         }
+
     }
 }

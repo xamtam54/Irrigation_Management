@@ -36,22 +36,22 @@ namespace Irrigation_Management.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Systems>> UpdateSystem(int id, string Systems_Name)
+        public async Task<ActionResult<Systems>> UpdateSystem(int id, [FromBody] Systems model)
         {
-            var user = await _systemsService.GetSystem(id);
-            if (user == null)
+            var system = await _systemsService.GetSystem(id);
+            if (system == null)
             {
                 return BadRequest("Systems not found");
             }
 
-            return Ok(await _systemsService.UpdateSystem(id, Systems_Name));
+            return Ok(await _systemsService.UpdateSystem(id, model.Systems_Name));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Systems>> DeleteSystem(int id)
         {
-            var user = await _systemsService.GetSystem(id);
-            if (user == null)
+            var system = await _systemsService.GetSystem(id);
+            if (system == null)
             {
                 return BadRequest("Systems not found");
             }
@@ -59,9 +59,15 @@ namespace Irrigation_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Systems>> CreateSystem(string Systems_Name)
+        public async Task<ActionResult<Systems>> CreateSystem([FromBody] Systems model)
         {
-            return await _systemsService.CreateSystem(Systems_Name);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _systemsService.CreateSystem(model.Systems_Name);
         }
+
     }
 }

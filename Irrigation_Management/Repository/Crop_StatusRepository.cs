@@ -24,7 +24,7 @@ namespace Irrigation_Management.Repository
 
         public async Task<List<Crop_Status>> GetAll()
         {
-            return await _db.Crop_Status.ToListAsync();
+            return await _db.Crop_Status.Where(u => u.IsDeleted == false).ToListAsync();
         }
 
         public async Task<Crop_Status?> GetCropStatus(int Crop_Status_Id)

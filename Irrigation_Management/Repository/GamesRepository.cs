@@ -9,7 +9,7 @@ namespace Irrigation_Management.Repository
         Task<List<Games>> GetAll();
         Task<Games?> GetGame(int gameId);
         Task<Games> CreateGame(int Achievement_Id, int scoreId, int? stage = null, decimal? endScore = null);
-        Task<Games?> UpdateGame(int gameId, int? stage = null, decimal? endScore = null);
+        Task<Games?> UpdateGame(int gameId, int? achievementId);
         Task<Games?> DeleteGame(Games gameToDelete);
         //----------------------------------------------------------
 
@@ -49,19 +49,16 @@ namespace Irrigation_Management.Repository
             return newGame;
         }
 
-        public async Task<Games?> UpdateGame(int gameId, int? stage = null, decimal? endScore = null)
+        public async Task<Games?> UpdateGame(int gameId, int? achievementId)
         {
-            Games? gameToUpdate = await GetGame(gameId);
+            var game = await _db.Games.FindAsync(gameId);
+            if (game == null)
+                return null;
 
-            if (gameToUpdate != null)
-            {
-                gameToUpdate.Stage = stage;
-                gameToUpdate.End_Score = endScore;
+            game.Achievement_Id = (int)achievementId;
+            await _db.SaveChangesAsync();
 
-                await _db.SaveChangesAsync();
-            }
-
-            return gameToUpdate;
+            return game;
         }
 
 

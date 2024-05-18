@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Irrigation_Management.Controllers
 {
-    [Route("/")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -76,7 +76,39 @@ namespace Irrigation_Management.Controllers
         }
 
 
+        [HttpGet("allocations/{userId}")]
+        public async Task<ActionResult<List<Allocation_Systems>>> GetAllocationsByUserId(int userId)
+        {
+            var allocations = await _usersService.GetAllocationsByUserId(userId);
+            if (allocations == null || allocations.Count == 0)
+            {
+                return BadRequest("No allocations found for the user");
+            }
+            return Ok(allocations);
+        }
 
+        //-----------------------------------------------------------------
+        [HttpPut("app/{id}")]
+        public async Task<ActionResult<Users>> UpdateUser(int id, [FromBody] Users model)
+        {
+            var user = await _usersService.GetUser(id);
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
 
+            return Ok(await _usersService.UpdateUser(id, model.UserName, model.Names, model.Surnames, model.Password, model.Email, model.Is_Active, model.User_Type_Id));
+        }
+
+        [HttpPost("app")]
+        public async Task<ActionResult<Users>> CreateUser([FromBody] Users model)
+        {
+            var userTypes = await _user_TypesService.GetUserType(model.User_Type_Id);
+            if (userTypes == null)
+            {
+                return BadRequest("User Type not found");
+            }
+            return await _usersService.CreateUser(model.UserName, model.Names, model.Surnames, model.Password, model.Email, model.User_Type_Id);
+        }
     }
 }

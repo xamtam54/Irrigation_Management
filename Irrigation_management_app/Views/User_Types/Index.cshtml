@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Irrigation_management_app.Models.User_TypesVModel>
+
+@{
+    ViewData["Title"] = "User Types";
+}
+
+<h1>User Types</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                User Type Id
+            </th>
+            <th>
+                User Type Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.User_Type_Id
+                </td>
+                <td>
+                    @item.User_Type_Name
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.User_Type_Id" class="btn btn-primary">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.User_Type_Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -35,24 +35,23 @@ namespace Irrigation_Management.Controllers
             return Ok(user);
         }
 
-
         [HttpPut("{id}")]
-        public async Task<ActionResult<Planting_Areas>> UpdatePlanting_Areas(int id, int Crop_Status_Id, int Plant_Id)
+        public async Task<ActionResult<Planting_Areas>> UpdatePlanting_Areas(int id, [FromBody] Planting_Areas model)
         {
-            var user = await _planting_AreasService.GetPlanting_Area(id);
-            if (user == null)
+            var plantingArea = await _planting_AreasService.GetPlanting_Area(id);
+            if (plantingArea == null)
             {
                 return BadRequest("Planting_Areas not found");
             }
 
-            return Ok(await _planting_AreasService.UpdatePlanting_Areas(id, Crop_Status_Id, Plant_Id));
+            return Ok(await _planting_AreasService.UpdatePlanting_Areas(id, model.Crop_Status_Id, model.Plant_Id));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Planting_Areas>> DeletePlanting_Areas(int id)
         {
-            var user = await _planting_AreasService.GetPlanting_Area(id);
-            if (user == null)
+            var plantingArea = await _planting_AreasService.GetPlanting_Area(id);
+            if (plantingArea == null)
             {
                 return BadRequest("Planting_Areas not found");
             }
@@ -60,9 +59,15 @@ namespace Irrigation_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Planting_Areas>> CreatePlanting_Areas(int Crop_Status_Id, int Plant_Id)
+        public async Task<ActionResult<Planting_Areas>> CreatePlanting_Areas([FromBody] Planting_Areas model)
         {
-            return await _planting_AreasService.CreatePlanting_Areas(Crop_Status_Id, Plant_Id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _planting_AreasService.CreatePlanting_Areas(model.Crop_Status_Id, model.Plant_Id);
         }
+
     }
 }

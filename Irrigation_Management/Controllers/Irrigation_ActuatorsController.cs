@@ -35,24 +35,23 @@ namespace Irrigation_Management.Controllers
             return Ok(user);
         }
 
-
         [HttpPut("{id}")]
-        public async Task<ActionResult<Irrigation_Actuators>> UpdateIrrigationActuator(int id, int Device_Id, int Irrigation_Actuators_Type_Id)
+        public async Task<ActionResult<Irrigation_Actuators>> UpdateIrrigationActuator(int id, [FromBody] Irrigation_Actuators model)
         {
-            var user = await _irrigationActuatorsService.GetIrrigationActuator(id);
-            if (user == null)
+            var irrigationActuator = await _irrigationActuatorsService.GetIrrigationActuator(id);
+            if (irrigationActuator == null)
             {
                 return BadRequest("Irrigation_Actuators not found");
             }
 
-            return Ok(await _irrigationActuatorsService.UpdateIrrigationActuator(id, Device_Id, Irrigation_Actuators_Type_Id));
+            return Ok(await _irrigationActuatorsService.UpdateIrrigationActuator(id, model.Device_Id, model.Irrigation_Actuators_Type_Id));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Irrigation_Actuators>> DeleteIrrigationActuator(int id)
         {
-            var user = await _irrigationActuatorsService.GetIrrigationActuator(id);
-            if (user == null)
+            var irrigationActuator = await _irrigationActuatorsService.GetIrrigationActuator(id);
+            if (irrigationActuator == null)
             {
                 return BadRequest("Irrigation_Actuators not found");
             }
@@ -60,9 +59,15 @@ namespace Irrigation_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Irrigation_Actuators>> CreateIrrigationActuator(int Device_Id, int Irrigation_Actuators_Type_Id)
+        public async Task<ActionResult<Irrigation_Actuators>> CreateIrrigationActuator([FromBody] Irrigation_Actuators model)
         {
-            return await _irrigationActuatorsService.CreateIrrigationActuator(Device_Id, Irrigation_Actuators_Type_Id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _irrigationActuatorsService.CreateIrrigationActuator(model.Device_Id, model.Irrigation_Actuators_Type_Id);
         }
+
     }
 }

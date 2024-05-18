@@ -37,22 +37,22 @@ namespace Irrigation_Management.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Irrigation_Programs>> UpdateIrrigationProgram(int id, TimeOnly Start_Hour, TimeOnly End_Hour, int Irrigations_Per_Week, int Area_Id)
+        public async Task<ActionResult<Irrigation_Programs>> UpdateIrrigationProgram(int id, [FromBody] Irrigation_Programs model)
         {
-            var user = await _irrigationProgramsService.GetIrrigationProgram(id);
-            if (user == null)
+            var irrigationProgram = await _irrigationProgramsService.GetIrrigationProgram(id);
+            if (irrigationProgram == null)
             {
                 return BadRequest("Irrigation_Programs not found");
             }
 
-            return Ok(await _irrigationProgramsService.UpdateIrrigationProgram(id, Start_Hour, End_Hour, Irrigations_Per_Week, Area_Id));
+            return Ok(await _irrigationProgramsService.UpdateIrrigationProgram(id, model.Start_Hour, model.End_Hour, model.Irrigations_Per_Week, model.Area_Id));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Irrigation_Programs>> DeleteIrrigationProgram(int id)
         {
-            var user = await _irrigationProgramsService.GetIrrigationProgram(id);
-            if (user == null)
+            var irrigationProgram = await _irrigationProgramsService.GetIrrigationProgram(id);
+            if (irrigationProgram == null)
             {
                 return BadRequest("Irrigation_Programs not found");
             }
@@ -60,9 +60,15 @@ namespace Irrigation_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Irrigation_Programs>> CreateIrrigationProgram(TimeOnly Start_Hour, TimeOnly End_Hour, int Irrigations_Per_Week, int Area_Id)
+        public async Task<ActionResult<Irrigation_Programs>> CreateIrrigationProgram([FromBody] Irrigation_Programs model)
         {
-            return await _irrigationProgramsService.CreateIrrigationProgram(Start_Hour, End_Hour, Irrigations_Per_Week, Area_Id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _irrigationProgramsService.CreateIrrigationProgram(model.Start_Hour, model.End_Hour, model.Irrigations_Per_Week, model.Area_Id);
         }
+
     }
 }

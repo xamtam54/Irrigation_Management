@@ -62,7 +62,7 @@ namespace Irrigation_Management.Migrations
                     b.Property<int?>("Game_Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("System_Id")
+                    b.Property<int?>("System_Id")
                         .HasColumnType("int");
 
                     b.Property<int>("User_Id")
@@ -261,6 +261,10 @@ namespace Irrigation_Management.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Area_Id"));
+
+                    b.Property<string>("Area_Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Crop_Status_Id")
                         .HasColumnType("int");
@@ -592,9 +596,7 @@ namespace Irrigation_Management.Migrations
 
                     b.HasOne("Irrigation_Management.Models.Systems", "System")
                         .WithMany()
-                        .HasForeignKey("System_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("System_Id");
 
                     b.HasOne("Irrigation_Management.Models.Users", "User")
                         .WithMany()

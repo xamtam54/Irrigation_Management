@@ -55,7 +55,7 @@ namespace Irrigation_Management.Repository
 
         public async Task<List<Plants>> GetPlants()
         {
-            return await _db.Plants.ToListAsync();
+            return await _db.Plants.Where(u => u.IsDeleted == false).ToListAsync();
         }
 
         public async Task<Plants?> UpdatePlants(int Plant_Id, string Plant_Name, string Specie, float Min_PH, float Max_PH, float Requirement_Liters)

@@ -36,22 +36,22 @@ namespace Irrigation_Management.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Water_Management_Types>> UpdateWaterManagementType(int id, string Type_Name, string Description, string Material)
+        public async Task<ActionResult<Water_Management_Types>> UpdateWaterManagementType(int id, [FromBody] Water_Management_Types model)
         {
-            var user = await _waterManagementTypesService.GetWaterManagementType(id);
-            if (user == null)
+            var waterManagementType = await _waterManagementTypesService.GetWaterManagementType(id);
+            if (waterManagementType == null)
             {
                 return BadRequest("Water_Management_Types not found");
             }
 
-            return Ok(await _waterManagementTypesService.UpdateWaterManagementType(id, Type_Name, Description, Material));
+            return Ok(await _waterManagementTypesService.UpdateWaterManagementType(id, model.Type_Name, model.Description, model.Material));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Water_Management_Types>> DeleteWaterManagementType(int id)
         {
-            var user = await _waterManagementTypesService.GetWaterManagementType(id);
-            if (user == null)
+            var waterManagementType = await _waterManagementTypesService.GetWaterManagementType(id);
+            if (waterManagementType == null)
             {
                 return BadRequest("Water_Management_Types not found");
             }
@@ -59,9 +59,15 @@ namespace Irrigation_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Water_Management_Types>> CreateWaterManagementType(string Type_Name, string Description, string Material)
+        public async Task<ActionResult<Water_Management_Types>> CreateWaterManagementType([FromBody] Water_Management_Types model)
         {
-            return await _waterManagementTypesService.CreateWaterManagementType(Type_Name, Description, Material);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _waterManagementTypesService.CreateWaterManagementType(model.Type_Name, model.Description, model.Material);
         }
+
     }
 }

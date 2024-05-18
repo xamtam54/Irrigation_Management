@@ -52,7 +52,7 @@ namespace Irrigation_Management.Repository
 
         public async Task<List<Planting_Areas>> GetPlanting_Areas()
         {
-            return await _db.Planting_Areas.ToListAsync();
+            return await _db.Planting_Areas.Where(u => u.IsDeleted == false).ToListAsync();
         }
 
         public async Task<Planting_Areas?> UpdatePlanting_Areas(int Area_Id, int Crop_Status_Id, int Plant_Id)

@@ -1,5 +1,6 @@
 ﻿using Irrigation_Management.Models;
 using Irrigation_Management.Repository;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Irrigation_Management.Services
 {
@@ -8,7 +9,7 @@ namespace Irrigation_Management.Services
         Task<List<Games>> GetAll();
         Task<Games?> GetGame(int gameId);
         Task<Games> CreateGame(int Achievement_Id, int scoreId, int? stage = null, decimal? endScore = null);
-        Task<Games?> UpdateGame(int gameId, int? stage = null, decimal? endScore = null);
+        Task<Games?> UpdateGameAchievementId(int gameId, int? achievementId);
         Task<Games?> DeleteGame(int gameId);
         //----------------------------------------------------------
     }
@@ -52,22 +53,13 @@ namespace Irrigation_Management.Services
             return await _gamesRepository.GetGame(gameId);
         }
 
-        public async Task<Games?> UpdateGame(int gameId, int? stage = null, decimal? endScore = null)
+        public async Task<Games?> UpdateGameAchievementId(int gameId, int? achievementId)
         {
-            Games? gameToUpdate = await GetGame(gameId);
-
-            if (gameToUpdate != null)
-            {
-                if (stage != null) { gameToUpdate.Stage = stage; }
-                if (endScore != null) { gameToUpdate.End_Score = endScore; }
-
-                await _gamesRepository.UpdateGame(gameId, stage, endScore);
-            }
-
-            return gameToUpdate;
+            var updatedGame = await _gamesRepository.UpdateGame(gameId, achievementId);
+            return updatedGame;
         }
 
         //------------------------------------------------------------------------------------------
-        
+
     }
 }

@@ -1,0 +1,36 @@
+﻿@model List<SystemsVModel>
+
+@{
+    ViewData["Title"] = "Systems";
+}
+
+<h1>Systems</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                System Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Systems_Name
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.System_Id" class="btn btn-primary">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.System_Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
