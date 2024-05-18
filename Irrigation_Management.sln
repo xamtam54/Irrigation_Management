@@ -3,14 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Irrigation_Management", "Irrigation_Management\Irrigation_Management.csproj", "{578709C7-38BE-403A-AA13-EC8B64EB6252}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Irrigation_Management_api", "Irrigation_Management\Irrigation_Management_api.csproj", "{578709C7-38BE-403A-AA13-EC8B64EB6252}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6571EBD2-4877-4E27-ABF2-3F7A2467AE07}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Irrigation_management_app", "Irrigation_management_app\Irrigation_management_app.csproj", "{B5CCA295-C7F1-4064-92C8-D1EEE61E7171}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Irrigation_management_app", "Irrigation_management_app\Irrigation_management_app.csproj", "{B5CCA295-C7F1-4064-92C8-D1EEE61E7171}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
