@@ -7,7 +7,7 @@ namespace Irrigation_Management.Models
     {
         [Key]
         public int Area_Id { get; set; }
-
+        
         public string Area_Name { get; set; } = "area1";
         //-------------------------------------------------------------------------------------
         [ForeignKey("Crop_Statu")]

@@ -1,10 +1,12 @@
 ﻿using Irrigation_management_app.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 
 namespace Irrigation_management_app.Controllers
 {
+    [Authorize]
     public class DevicesController : Controller
     {
 
@@ -15,7 +17,13 @@ namespace Irrigation_management_app.Controllers
             _httpClient = httpClientFactory.CreateClient();
             _httpClient.BaseAddress = new Uri("http://www.irrigationmanagementudec.somee.com/api/");
         }
-
+        
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            return View();
+        }
+        
         public async Task<IActionResult> Index()
         {
             var response = await _httpClient.GetAsync("Devices");
@@ -33,7 +41,7 @@ namespace Irrigation_management_app.Controllers
             }
             return View("Error");
         }
-
+        
         public async Task<IActionResult> Create()
         {
             var systemsResponse = await _httpClient.GetAsync("Systems");

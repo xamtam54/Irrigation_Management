@@ -1,0 +1,39 @@
+﻿@model Irrigation_management_app.Models.Planting_AreasVModel
+
+@if (Model != null)
+{
+    <h2>Confirmación de Eliminación</h2>
+    <p>El siguiente área de plantación ha sido eliminada correctamente:</p>
+    <div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Area_Id)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Area_Id)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Area_Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Area_Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Crop_Statu.Crop_Status_Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Crop_Statu.Crop_Status_Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Plant.Plant_Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Plant.Plant_Name)
+            </dd>
+        </dl>
+    </div>
+}
+
+<form asp-action="Index">
+    <button type="submit" class="btn btn-secondary">Volver</button>
+</form>

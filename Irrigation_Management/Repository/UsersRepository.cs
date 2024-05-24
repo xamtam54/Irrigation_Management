@@ -9,8 +9,8 @@ namespace Irrigation_Management.Repository
     {
         Task<List<Users>> GetAll();
         Task<Users?> GetUser(int User_Id); 
-        Task<Users> CreateUser(string UserName, string Names, string Surnames, string Password, string Email, int User_Type_Id);
-        Task<Users?> UpdateUser(int Users_Id, string UserName, string Names, string Surnames, string Password, string Email, int Is_Active, int User_Type_Id);
+        Task<Users> CreateUser(string UserName, string Names, string Surnames, string Password, string Email, int User_Type_Id, string City);
+        Task<Users?> UpdateUser(int Users_Id, string UserName, string Names, string Surnames, string Password, string Email, int Is_Active, int User_Type_Id, string City);
         Task<Users?> DeleteUser(Users user);
 
         //-------------------------------------------------------------
@@ -18,6 +18,8 @@ namespace Irrigation_Management.Repository
         Task<Allocation_Systems> CreateAllocationSystem(int? gameId = -1, int systemId = -1, int userId = -1);
         Task<Allocation_Systems?> DeleteAllocationSystem(int? gameId = -1, int systemId = -1, int userId = -1);
         Task<List<Allocation_Systems>> GetAllocationsByUserId(int userId);
+        //---------------------------------------------------------------
+        Task<Users> AuthenticateAsync(string username, string password);
     }
     public class UsersRepository : IUsersRepository
     {
@@ -36,7 +38,7 @@ namespace Irrigation_Management.Repository
             return await _db.Users.FindAsync(User_Id);
         }
 
-        public async Task<Users> CreateUser(string UserName, string Names, string Surnames, string Password, string Email, int User_Type_Id)
+        public async Task<Users> CreateUser(string UserName, string Names, string Surnames, string Password, string Email, int User_Type_Id, string City)
         {
             Users newUser = new Users
             {
@@ -45,7 +47,8 @@ namespace Irrigation_Management.Repository
                 Surnames = Surnames,
                 Password = Password,
                 Email = Email,
-                User_Type_Id = User_Type_Id
+                User_Type_Id = User_Type_Id,
+                City = City
             };
 
             await _db.Users.AddAsync(newUser);
@@ -56,7 +59,7 @@ namespace Irrigation_Management.Repository
 
             return newUser;
         }
-        public async Task<Users?> UpdateUser(int Users_Id, string UserName, string Names, string Surnames, string Password, string Email, int Is_Active, int User_Type_Id)
+        public async Task<Users?> UpdateUser(int Users_Id, string UserName, string Names, string Surnames, string Password, string Email, int Is_Active, int User_Type_Id, string City)
         {
             Users? userToUpdate = await GetUser(Users_Id);
 
@@ -69,7 +72,7 @@ namespace Irrigation_Management.Repository
                 userToUpdate.Email = Email;
                 userToUpdate.Is_Active = Is_Active;
                 userToUpdate.User_Type_Id = User_Type_Id;
-
+                userToUpdate.City = City;
                 await _db.SaveChangesAsync();
             }
 
@@ -146,6 +149,12 @@ namespace Irrigation_Management.Repository
             return allocations;
 
             //return await _db.Allocation_Systems.ToListAsync();
+        }
+        ////------------------------------------------------------
+        public async Task<Users> AuthenticateAsync(string username, string password)
+        {
+            // Buscar el usuario por nombre de usuario y contraseña
+            return await _db.Users.FirstOrDefaultAsync(x => x.UserName == username && x.Password == password && x.IsDeleted == false);
         }
     }
 }

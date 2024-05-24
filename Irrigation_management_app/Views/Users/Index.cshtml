@@ -7,7 +7,13 @@
 <h1>Users</h1>
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New</a>
+
+    <form action="/Users/Logout" method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
 </p>
+
 <table class="table table-striped table-bordered">
     <thead class="thead-dark">
         <tr>

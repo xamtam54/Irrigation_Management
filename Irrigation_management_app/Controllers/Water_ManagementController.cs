@@ -1,4 +1,5 @@
 ﻿using Irrigation_management_app.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -6,6 +7,7 @@ using System.Text;
 
 namespace Irrigation_management_app.Controllers
 {
+    [Authorize]
     public class Water_ManagementController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -15,7 +17,7 @@ namespace Irrigation_management_app.Controllers
             _httpClient = httpClientFactory.CreateClient();
             _httpClient.BaseAddress = new Uri("http://www.irrigationmanagementudec.somee.com/api/");
         }
-
+        
         public async Task<IActionResult> Index()
         {
             var response = await _httpClient.GetAsync("Water_Management");

@@ -55,6 +55,35 @@
                     </select>
                     <span asp-validation-for="User_Type_Id" class="text-danger"></span>
                 </div>
+
+                <div class="form-group">
+                    <label for="City">City</label>
+                    <select asp-for="City" class="form-control">
+                        <option value="">Selecciona una ciudad</option>
+                        <option value="Bogotá">Bogotá</option>
+                        <option value="Soacha">Soacha</option>
+                        <option value="Facatativá">Facatativá</option>
+                        <option value="Zipaquirá">Zipaquirá</option>
+                        <option value="Chía">Chía</option>
+                        <option value="Girardot">Girardot</option>
+                        <option value="Funza">Funza</option>
+                        <option value="Mosquera">Mosquera</option>
+                        <option value="Cajicá">Cajicá</option>
+                        <option value="Madrid">Madrid</option>
+                        <option value="Fusagasugá">Fusagasugá</option>
+                        <option value="Sibaté">Sibaté</option>
+                        <option value="Tabio">Tabio</option>
+                        <option value="Tenjo">Tenjo</option>
+                        <option value="Cota">Cota</option>
+                        <option value="Tocancipá">Tocancipá</option>
+                        <option value="Bojacá">Bojacá</option>
+                        <option value="Cajicá">Cajicá</option>
+                        <option value="La Calera">La Calera</option>
+                        <option value="La Mesa">La Mesa</option>
+                    </select>
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Save</button>
                 <a asp-action="Index" class="btn btn-secondary">Go back</a>
             </form>

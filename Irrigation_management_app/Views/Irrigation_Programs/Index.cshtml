@@ -1,0 +1,35 @@
+﻿@model List<Irrigation_management_app.Models.Irrigation_ProgramsVModel>
+
+<h2>Programas de Riego</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Crear Nuevo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Hora de Inicio</th>
+            <th>Hora de Fin</th>
+            <th>Riegos por Semana</th>
+            <th>Área de Plantación</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Irrigation_Program_Id</td>
+                <td>@item.Start_Hour</td>
+                <td>@item.End_Hour</td>
+                <td>@item.Irrigations_Per_Week</td>
+                <td>@item.Planting_Area?.Area_Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Irrigation_Program_Id" class="btn btn-primary">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.Irrigation_Program_Id" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

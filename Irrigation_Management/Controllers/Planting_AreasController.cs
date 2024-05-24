@@ -44,7 +44,7 @@ namespace Irrigation_Management.Controllers
                 return BadRequest("Planting_Areas not found");
             }
 
-            return Ok(await _planting_AreasService.UpdatePlanting_Areas(id, model.Crop_Status_Id, model.Plant_Id));
+            return Ok(await _planting_AreasService.UpdatePlanting_Areas(id, model.Area_Name, model.Crop_Status_Id, model.Plant_Id));
         }
 
         [HttpDelete("{id}")]
@@ -66,7 +66,7 @@ namespace Irrigation_Management.Controllers
                 return BadRequest(ModelState);
             }
 
-            return await _planting_AreasService.CreatePlanting_Areas(model.Crop_Status_Id, model.Plant_Id);
+            return await _planting_AreasService.CreatePlanting_Areas(model.Crop_Status_Id, model.Area_Name, model.Plant_Id);
         }
 
     }

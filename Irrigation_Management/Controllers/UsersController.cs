@@ -42,7 +42,7 @@ namespace Irrigation_Management.Controllers
         
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Users>> UpdateUser(int id, string UserName, string Names, string Surnames, string Password, string Email, int Is_Active, int User_Type_Id)
+        public async Task<ActionResult<Users>> UpdateUser(int id, string UserName, string Names, string Surnames, string Password, string Email, int Is_Active, int User_Type_Id, string? City)
         {
             var user = await _usersService.GetUser(id);
             if (user == null)
@@ -50,7 +50,7 @@ namespace Irrigation_Management.Controllers
                 return BadRequest("User not found");
             }
 
-            return Ok(await _usersService.UpdateUser(id, UserName, Names, Surnames, Password, Email, Is_Active, User_Type_Id));
+            return Ok(await _usersService.UpdateUser(id, UserName, Names, Surnames, Password, Email, Is_Active, User_Type_Id, City));
         }
 
         [HttpDelete("{id}")]
@@ -65,14 +65,14 @@ namespace Irrigation_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Users>> CreateUser(string UserName, string Names, string Surnames, string Password, string Email, int User_Type_Id)
+        public async Task<ActionResult<Users>> CreateUser(string UserName, string Names, string Surnames, string Password, string Email, int User_Type_Id, string? City)
         {
             var userTypes = await _user_TypesService.GetUserType(User_Type_Id);
             if (userTypes == null)
             {
                 return BadRequest("User Type not found");
             }
-            return await _usersService.CreateUser(UserName, Names, Surnames, Password, Email, User_Type_Id);
+            return await _usersService.CreateUser(UserName, Names, Surnames, Password, Email, User_Type_Id, City);
         }
 
 
@@ -97,7 +97,7 @@ namespace Irrigation_Management.Controllers
                 return BadRequest("User not found");
             }
 
-            return Ok(await _usersService.UpdateUser(id, model.UserName, model.Names, model.Surnames, model.Password, model.Email, model.Is_Active, model.User_Type_Id));
+            return Ok(await _usersService.UpdateUser(id, model.UserName, model.Names, model.Surnames, model.Password, model.Email, model.Is_Active, model.User_Type_Id, model.City));
         }
 
         [HttpPost("app")]
@@ -108,7 +108,18 @@ namespace Irrigation_Management.Controllers
             {
                 return BadRequest("User Type not found");
             }
-            return await _usersService.CreateUser(model.UserName, model.Names, model.Surnames, model.Password, model.Email, model.User_Type_Id);
+            return await _usersService.CreateUser(model.UserName, model.Names, model.Surnames, model.Password, model.Email, model.User_Type_Id, model.City);
+        }
+
+        [HttpGet("login")]
+        public async Task<IActionResult> Login(string username, string password)
+        {
+            var user = await _usersService.AuthenticateAsync(username, password);
+
+            if (user == null)
+                return Unauthorized(new { message = "Username or password is incorrect" });
+
+            return Ok(user);
         }
     }
 }

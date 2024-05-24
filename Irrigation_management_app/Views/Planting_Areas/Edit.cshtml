@@ -1,0 +1,21 @@
+﻿@model Irrigation_management_app.Models.Planting_AreasVModel
+
+<h2>Editar Área de Plantación</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Area_Id" />
+    <div class="form-group">
+        <label asp-for="Crop_Status_Id" class="control-label">Estado de Cultivo</label>
+        <select asp-for="Crop_Status_Id" class="form-control" asp-items="ViewBag.CropStatuses"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Plant_Id" class="control-label">Planta</label>
+        <select asp-for="Plant_Id" class="form-control" asp-items="ViewBag.Plants"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Area_Name" class="control-label">Nombre del Área</label>
+        <input asp-for="Area_Name" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

@@ -31,5 +31,9 @@ namespace Irrigation_management_app.Models
         //-------------------------------------------------------------------------------------
 
         public bool IsDeleted { get; internal set; } = false;
+
+        [Required]
+        [StringLength(69)]
+        public string City { get; set; } = "Bogota";
     }
 }

@@ -9,8 +9,8 @@ namespace Irrigation_Management.Repository
     {
         Task<List<Planting_Areas>> GetPlanting_Areas();
         Task<Planting_Areas?> GetPlanting_Area(int Area_Id);
-        Task<Planting_Areas> CreatePlanting_Areas(int Crop_Status_Id, int Plant_Id);
-        Task<Planting_Areas?> UpdatePlanting_Areas(int Area_Id, int Crop_Status_Id, int Plant_Id);
+        Task<Planting_Areas> CreatePlanting_Areas(int Crop_Status_Id, string Area_Name, int Plant_Id);
+        Task<Planting_Areas?> UpdatePlanting_Areas(int Area_Id, string Area_Name, int Crop_Status_Id, int Plant_Id);
         Task<Planting_Areas?> DeletePlanting_Areas(Planting_Areas areaToDelete);
     }
     public class Planting_AreasRepository : IPlanting_AreasRepository
@@ -21,10 +21,11 @@ namespace Irrigation_Management.Repository
             _db = db;
         }
 
-        public async Task<Planting_Areas> CreatePlanting_Areas(int Crop_Status_Id, int Plant_Id)
+        public async Task<Planting_Areas> CreatePlanting_Areas(int Crop_Status_Id, string Area_Name, int Plant_Id)
         {
             Planting_Areas newArea = new Planting_Areas
             {
+                Area_Name = Area_Name,
                 Crop_Status_Id = Crop_Status_Id,
                 Plant_Id = Plant_Id
             };
@@ -55,12 +56,13 @@ namespace Irrigation_Management.Repository
             return await _db.Planting_Areas.Where(u => u.IsDeleted == false).ToListAsync();
         }
 
-        public async Task<Planting_Areas?> UpdatePlanting_Areas(int Area_Id, int Crop_Status_Id, int Plant_Id)
+        public async Task<Planting_Areas?> UpdatePlanting_Areas(int Area_Id, string Area_Name, int Crop_Status_Id, int Plant_Id)
         {
             Planting_Areas? planting_AreaToUpdate = await GetPlanting_Area(Area_Id);
 
             if (planting_AreaToUpdate != null)
             {
+                planting_AreaToUpdate.Area_Name = Area_Name;
                 planting_AreaToUpdate.Crop_Status_Id = Crop_Status_Id;
                 planting_AreaToUpdate.Plant_Id = Plant_Id;
 

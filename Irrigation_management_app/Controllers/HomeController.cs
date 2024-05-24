@@ -1,11 +1,20 @@
 using Irrigation_management_app.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace Irrigation_management_app.Controllers
 {
+  
     public class HomeController : Controller
     {
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            return View();
+        }
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -28,5 +37,8 @@ namespace Irrigation_management_app.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        
+       
     }
 }

@@ -1,0 +1,33 @@
+﻿@model Irrigation_management_app.Models.Irrigation_ProgramsVModel
+
+<h2>Confirmar Eliminación</h2>
+
+@if (Model != null)
+{
+    <div class="alert alert-warning">
+        <h4>¿Está seguro que desea eliminar este programa de riego?</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>ID</dt>
+            <dd>@Model.Irrigation_Program_Id</dd>
+
+            <dt>Hora de Inicio</dt>
+            <dd>@Model.Start_Hour</dd>
+
+            <dt>Hora de Fin</dt>
+            <dd>@Model.End_Hour</dd>
+
+            <dt>Riegos por Semana</dt>
+            <dd>@Model.Irrigations_Per_Week</dd>
+
+            <dt>Área de Plantación</dt>
+            <dd>@Model.Planting_Area?.Area_Name</dd>
+        </dl>
+    </div>
+}
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Irrigation_Program_Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

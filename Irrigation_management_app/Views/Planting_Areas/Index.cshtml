@@ -1,0 +1,36 @@
+﻿@model List<Irrigation_management_app.Models.Planting_AreasVModel>
+
+<h2>Áreas de Plantación</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Crear Nuevo</a>
+
+    <a asp-action="Index" asp-controller="Irrigation_Programs" class="btn btn-primary">Irrigation Programs</a>
+
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre del Área</th>
+            <th>Estado de Cultivo</th>
+            <th>Planta</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Area_Id</td>
+                <td>@item.Area_Name</td>
+                <td>@item.Crop_Statu.Crop_Status_Name</td>
+                <td>@item.Plant.Plant_Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Area_Id" class="btn btn-primary">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Area_Id" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
